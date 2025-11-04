@@ -23,7 +23,7 @@
       background: #fff;
       color: var(--text-dark);
       overflow-x: hidden;
-      padding-top: 80px; /* عشان المحتوى ما يختفي ورا الهيدر */
+      padding-top: 80px;
     }
 
     /* ===== الهيدر ===== */
@@ -58,66 +58,88 @@
     }
 
     .logo img {
-      height: 45px;
+      height: 50px;
       width: auto;
     }
 
     /* ===== الصورة الرئيسية ===== */
     .hero-image {
-      margin-top: 20px;
+      margin-top: 30px;
       text-align: center;
     }
 
     .hero-image img {
       width: 100%;
-      max-width: 500px;
-      border-radius: 12px;
+      max-width: 520px;
+      border-radius: 14px;
       box-shadow: 0 0 15px rgba(0, 255, 150, 0.4);
     }
 
     /* ===== المنتجات ===== */
     .products {
-      padding: 40px 20px;
+      padding: 50px 20px;
       text-align: center;
     }
 
     .products h2 {
-      font-size: 28px;
-      margin-bottom: 30px;
+      font-size: 30px;
+      margin-bottom: 35px;
       font-weight: bold;
     }
 
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 25px;
-      max-width: 700px;
+      gap: 20px;
+      max-width: 800px;
       margin: auto;
+    }
+
+    @media (min-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     .product {
       text-align: center;
       position: relative;
-    }
-
-    .product img {
-      width: 390px;
-      border-radius: 10px;
+      background: #fafafa;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
       transition: transform 0.3s ease;
     }
 
-    .product img:hover {
-      transform: scale(1.07);
+    .product:hover {
+      transform: scale(1.03);
+    }
+
+    .product img {
+      width: 100%;
+      max-width: 180px;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
     }
 
     .old-price {
       text-decoration: line-through;
       color: #777;
+      font-size: 14px;
+      margin: 5px 0;
     }
 
     .new-price {
       font-weight: bold;
-      font-size: 18px;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .price-sa {
+      color: #25D366;
+      font-weight: 600;
+      font-size: 15px;
+      margin-top: 2px;
     }
 
     /* زر الطلب */
@@ -205,7 +227,14 @@
       color: var(--main-color);
     }
 
-    
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #fafafa;
+      margin-top: 60px;
+      border-top: 1px solid #eee;
+      font-weight: 500;
+    }
   </style>
 </head>
 
@@ -228,13 +257,13 @@
     <i class="fa-solid fa-xmark" id="closeBtn"></i>
   </div>
   <nav>
-    <a href="#home">الرئيسية</a>
-    <a href="#cards">كل الكروت</a>
-    <a href="#tutorials">الشروحات</a>
-    <a href="#features">المميزات</a>
-    <a href="#faq">الأسئلة الشائعة</a>
-    <a href="#about">عن مُـخـتـلـف</a>
-    <a href="#contact">تواصل معنا</a>
+    <a href="index.html">الرئيسية</a>
+    <a href="cards.html">كل الكروت</a>
+    <a href="tutorials.html">الشروحات</a>
+    <a href="features.html">المميزات</a>
+    <a href="faq.html">الأسئلة الشائعة</a>
+    <a href="about.html">عن مُـخـتـلـف</a>
+    <a href="contact.html">تواصل معنا</a>
   </nav>
   <div class="social">
     <a href="https://www.instagram.com/a_different1" target="_blank"><i class="fa-brands fa-instagram"></i></a>
@@ -242,56 +271,66 @@
   </div>
 </div>
 
+<!-- الصورة الرئيسية -->
 <div class="hero-image" id="home">
   <img src="aa.png" alt="صورة مختلفة" />
 </div>
-
-
-
-  </div>
-</section>
 
 <!-- قسم المنتجات -->
 <section class="products" id="cards">
   <h2>الأكثر مبيعاً</h2>
   <div class="product-grid">
+
     <div class="product">
       <img src="هيثم1-removebg-preview.png" alt="White Card">
       <h3>كارت مُـخـتـلـف الأبيض</h3>
       <p class="old-price">LE 370.00</p>
       <p class="new-price">LE 299.00</p>
+      <p class="price-sa">SAR 35</p>
     </div>
+
     <div class="product">
       <img src="تصميم_1-removebg-preview.png" alt="Black Card">
       <h3>كارت مُـخـتـلـف الأسود</h3>
       <p class="old-price">LE 370.00</p>
       <p class="new-price">LE 299.00</p>
+      <p class="price-sa">SAR 35</p>
     </div>
+
     <div class="product">
-      <img src="هيثم1-removebg-preview.png" alt="White Card">
-      <h3>كارت مُـخـتـلـف الأبيض</h3>
+      <img src="هيثم1-removebg-preview.png" alt="Gold Card">
+      <h3>كارت مُـخـتـلـف الذهبي</h3>
+      <p class="old-price">LE 420.00</p>
+      <p class="new-price">LE 349.00</p>
+      <p class="price-sa">SAR 40</p>
+    </div>
+
+    <div class="product">
+      <img src="تصميم_1-removebg-preview.png" alt="Silver Card">
+      <h3>كارت مُـخـتـلـف الفضي</h3>
+      <p class="old-price">LE 370.00</p>
+      <p class="new-price">LE 310.00</p>
+      <p class="price-sa">SAR 36</p>
+    </div>
+
+    <div class="product">
+      <img src="هيثم1-removebg-preview.png" alt="Wood Card">
+      <h3>كارت مُـخـتـلـف الخشبي</h3>
+      <p class="old-price">LE 450.00</p>
+      <p class="new-price">LE 380.00</p>
+      <p class="price-sa">SAR 45</p>
+    </div>
+
+    <div class="product">
+      <img src="هيثم2-removebg-preview.png" alt="Blue Card">
+      <h3>كارت مُـخـتـلـف الأزرق</h3>
       <p class="old-price">LE 370.00</p>
       <p class="new-price">LE 299.00</p>
+      <p class="price-sa">SAR 35</p>
     </div>
-    <div class="product">
-      <img src="هيثم1-removebg-preview.png" alt="White Card">
-      <h3>كارت مُـخـتـلـف الأبيض</h3>
-      <p class="old-price">LE 370.00</p>
-      <p class="new-price">LE 299.00</p>
-    </div>
-    <div class="product">
-      <img src="هيثم1-removebg-preview.png" alt="White Card">
-      <h3>كارت مُـخـتـلـف الأبيض</h3>
-      <p class="old-price">LE 370.00</p>
-      <p class="new-price">LE 299.00</p>
-    </div>
-    <div class="product">
-      <img src="هيثم1-removebg-preview.png" alt="White Card">
-      <h3>كارت مُـخـتـلـف الأبيض</h3>
-      <p class="old-price">LE 370.00</p>
-      <p class="new-price">LE 299.00</p>
-    </div>
+
   </div>
+
   <div class="order-all">
     <a href="https://wa.me/message/364PZMOXC2UWA1" target="_blank" class="order-btn">اطلب الآن</a>
   </div>
