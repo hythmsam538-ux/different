@@ -10,29 +10,65 @@
       --main-color: #00ffa3;
       --text-dark: #1a1a1a;
     }
-    /* 📱 الجوال: خليها كرتين في الصف */
-@media (max-width: 768px) {
+ .faq-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* كل صف فيه كرتين */
+  gap: 20px;
+  justify-content: center;
+  align-items: stretch;
+  padding: 20px;
+}
+
+.faq-box {
+  background: #fff;
+  border: 2px solid #00ffc3;
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.faq-box:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.faq-icon {
+  background: #00ffc3;
+  color: #fff;
+  font-size: 22px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+}
+
+.faq-box h3 {
+  color: #000;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.faq-box p {
+  color: #333;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* 🖥️ على الكمبيوتر: خليه 3 في الصف */
+@media (min-width: 992px) {
   .faq-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* 📱📱 الشاشات الصغيرة جداً: خليها كرت واحد في الصف */
+/* 📱 لو الشاشة صغيرة جدًا: كرت واحد */
 @media (max-width: 480px) {
   .faq-container {
-    grid-template-columns: 1fr;
-  }
-}
-/* 📱 الجوال: خلي كل صف فيه كرتين */
-@media (max-width: 768px) {
-  .features-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* 📱📱 الشاشات الصغيرة جدًا: كرت واحد في الصف */
-@media (max-width: 480px) {
-  .features-container {
     grid-template-columns: 1fr;
   }
 }
