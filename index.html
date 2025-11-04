@@ -10,6 +10,32 @@
       --main-color: #00ffa3;
       --text-dark: #1a1a1a;
     }
+    /* 📱 الجوال: خليها كرتين في الصف */
+@media (max-width: 768px) {
+  .faq-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 📱📱 الشاشات الصغيرة جداً: خليها كرت واحد في الصف */
+@media (max-width: 480px) {
+  .faq-container {
+    grid-template-columns: 1fr;
+  }
+}
+/* 📱 الجوال: خلي كل صف فيه كرتين */
+@media (max-width: 768px) {
+  .features-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 📱📱 الشاشات الصغيرة جدًا: كرت واحد في الصف */
+@media (max-width: 480px) {
+  .features-container {
+    grid-template-columns: 1fr;
+  }
+}
 
     * {
       box-sizing: border-box;
@@ -30,7 +56,8 @@
 }
 
 .order-btn {
-  background: #000; /* اللون الرئيسي */
+  display: inline-block;
+  background: #25D366; /* لون واتساب */
   color: #fff;
   border: none;
   padding: 14px 40px;
@@ -38,11 +65,13 @@
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  text-decoration: none;
   transition: 0.3s ease;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
 }
 
 .order-btn:hover {
-  background: #333;
+  background: #1ebe5d;
   transform: scale(1.05);
 }
 
@@ -95,7 +124,7 @@
 }
 
 .product img {
-  width: 260px; /* 🔹 حجم أكبر للصورة */
+  width: 320px; /* 🔹 حجم أكبر للصورة */
   height: auto;
   border-radius: 10px;
   transition: transform 0.3s ease;
@@ -423,7 +452,6 @@
   <div class="product-grid">
     <div class="product">
       <img src="هيثم1-removebg-preview.png" alt="White Card">
-      <span class="discount">خصم</span>
       <h3>كارت مُـخـتـلـف الأبيض</h3>
       <p class="old-price">LE 370.00</p>
       <p class="new-price">LE 299.00</p>
@@ -431,7 +459,6 @@
 
     <div class="product">
       <img src="تصميم_1-removebg-preview.png" alt="Black Card">
-      <span class="discount">خصم</span>
       <h3>كارت مُـخـتـلـف الأسود</h3>
       <p class="old-price">LE 370.00</p>
       <p class="new-price">LE 299.00</p>
@@ -439,7 +466,6 @@
 
     <div class="product">
       <img src="هيثم2-removebg-preview.png" alt="Burgundy Card">
-      <span class="discount">خصم</span>
       <h3>كارت مُـخـتـلـف العنّابي</h3>
       <p class="old-price">LE 370.00</p>
       <p class="new-price">LE 299.00</p>
@@ -447,15 +473,15 @@
 
     <div class="product">
       <img src="تصميم_1-removebg-preview.png" alt="Blue Card">
-      <span class="discount">خصم</span>
       <h3>كارت مُـخـتـلـف الأزرق</h3>
       <p class="old-price">LE 370.00</p>
       <p class="new-price">LE 299.00</p>
     </div>
   </div>
   <div class="order-all">
-  <button class="order-btn">اطلب الآن</button>
+  <a href="https://wa.me/message/364PZMOXC2UWA1" target="_blank" class="order-btn">اطلب الآن</a>
 </div>
+
 
 </section>
 
