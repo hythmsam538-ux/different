@@ -27,7 +27,7 @@
     /* ====== HEADER ====== */
     header {
       background: rgba(255, 255, 255, 0.9);
-      padding: 12px 30px;
+      padding: 8px 20px;
       position: fixed;
       top: 0;
       width: 100%;
@@ -39,84 +39,74 @@
       backdrop-filter: blur(8px);
     }
 
-    .logo img { height: 40px; width: auto; }
+    .logo img { height: 35px; width: auto; }
 
-    nav { display: flex; gap: 10px; }
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
     nav a {
       text-decoration: none;
       color: var(--text-dark);
       background: transparent;
-      padding: 10px 18px;
+      padding: 6px 12px;
       border: 1px solid var(--main-color);
-      border-radius: 30px;
+      border-radius: 20px;
       transition: 0.3s;
       font-weight: bold;
+      font-size: 14px;
     }
 
     nav a:hover {
       background: var(--main-color);
       color: #000;
       box-shadow: var(--btn-glow);
-      transform: scale(1.05);
     }
 
     section {
-      padding: 110px 20px 80px;
+      padding: 100px 15px 60px;
       text-align: center;
     }
 
-    h2 { color: var(--main-color); margin-bottom: 25px; letter-spacing: 1px; }
-    p { font-size: 20px; }
+    h2 { color: var(--main-color); margin-bottom: 20px; font-size: 22px; }
+    p { font-size: 16px; line-height: 1.7; }
 
-    /* ===== خلفيات الأقسام ===== */
-    #intro { background: linear-gradient(135deg, #ffffff, #f0f0f0); }
-    #services { background: linear-gradient(135deg, #ffffff, #ffffff); }
-    #media { background: linear-gradient(135deg, #ffffff, #f2f2f2); }
-    #clients { background: linear-gradient(135deg, #f7f7f7, #e9e9e9); }
-    #contact { background: linear-gradient(135deg, #ffffff, #f0f0f0); }
-.intro img {
-  width: 100%;
-  height: auto;
-  border-radius: 0; /* بدون زوايا */
-  box-shadow: 0 0 20px rgba(0, 255, 150, 0.5);
-  transition: transform 0.3s ease;
-  display: block;
-  margin: 0;
-  max-width: 100%; /* تمتد على كل العرض */
-}
-
-    @media (max-width: 768px) {
-      .service-item img {
-        max-width: 90%; /* تصغير على الجوال */
-        border-radius: 10px;
-      }
+    /* ===== المقدمة ===== */
+    .intro img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 255, 150, 0.5);
+      display: block;
+      margin: 0 auto;
+      max-width: 500px;
     }
 
-
-
-   
     .intro p {
-      max-width: 600px;
+      max-width: 500px;
       margin: 20px auto;
       background: #fafafa;
-      padding: 15px;
-      border-radius: 12px;
+      padding: 10px;
+      border-radius: 10px;
       color: var(--text-muted);
-      box-shadow: inset 0 0 10px rgba(0, 255, 163, 0.15);
+      box-shadow: inset 0 0 8px rgba(0, 255, 163, 0.1);
+      font-size: 15px;
     }
 
-    /* ====== الأزرار ====== */
+    /* ===== الأزرار ===== */
     .btn {
       display: inline-block;
-      margin: 10px;
-      padding: 12px 20px;
+      margin: 8px;
+      padding: 10px 18px;
       color: #ffffff;
       background: var(--main-color);
       border: none;
       border-radius: 25px;
       font-weight: bold;
-      font-size: 15px;
+      font-size: 14px;
       cursor: pointer;
       box-shadow: var(--btn-glow);
       transition: all 0.3s ease;
@@ -124,78 +114,74 @@
 
     .btn:hover {
       background: #00cc84;
-      transform: scale(1.07);
-      box-shadow: 0 0 25px rgba(0, 255, 163, 0.8);
+      transform: scale(1.05);
     }
 
-    /* ====== الخدمات ====== */
+    /* ===== الخدمات ===== */
     .services {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 40px;
+      gap: 20px;
     }
 
     .service-card {
-      background: #ffffff;
-      width: 160px;
-      height: 140px;
+      background: #fff;
+      width: 130px;
+      height: 110px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-radius: 15px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: 0.3s;
-      font-weight: bold;
-      color: var(--text-dark);
     }
 
     .service-card img {
-      width: 200px;
-      height: 200px;
-      margin-bottom: 8px;
-      border-radius: 10px;
+      width: 90%;
+      height: auto;
+      border-radius: 8px;
     }
 
-    /* إزالة الدائرة اللامعة (التوهّج) */
     .service-card:hover {
-      transform: scale(1.05);
+      transform: scale(1.04);
       color: var(--main-color);
     }
 
-    /* ====== الشروحات ====== */
+    /* ===== الشروحات ===== */
     .media {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 25px;
+      gap: 15px;
     }
 
     .tutorial {
       background: #fff;
-      border-radius: 15px;
+      border-radius: 10px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      width: 300px;
+      width: 90%;
+      max-width: 320px;
       padding: 10px;
     }
 
     .tutorial img, .tutorial video {
       width: 100%;
       border-radius: 10px;
-      margin-bottom: 10px;
     }
 
-    /* ====== العملاء ====== */
+    /* ===== العملاء ===== */
     .gallery {
       position: relative;
-      width: 300px;
+      width: 90%;
+      max-width: 300px;
       margin: 0 auto;
     }
 
     .gallery img {
       width: 100%;
-      border-radius: 15px;
+      border-radius: 10px;
       display: none;
       box-shadow: var(--btn-glow);
     }
@@ -206,7 +192,7 @@
       background: var(--main-color);
       border: none;
       color: #000;
-      padding: 8px 15px;
+      padding: 6px 10px;
       border-radius: 10px;
       cursor: pointer;
       position: absolute;
@@ -216,35 +202,28 @@
       font-weight: bold;
     }
 
-    .gallery button:hover {
-      background: #00cc84;
-      box-shadow: var(--btn-glow);
-    }
-
-    .prev { left: -50px; }
-    .next { right: -50px; }
+    .prev { left: -30px; }
+    .next { right: -30px; }
 
     footer {
       background: #f3f3f3;
-      padding: 20px;
+      padding: 15px;
       text-align: center;
       color: var(--text-muted);
-      font-size: 14px;
-      border-top: 1px solid #ddd;
+      font-size: 13px;
     }
 
     @media (max-width: 600px) {
-      header { flex-direction: column; gap: 10px; }
-      .service-card { width: 130px; height: 120px; }
-      .tutorial { width: 90%; }
+      h2 { font-size: 20px; }
+      .btn { font-size: 13px; padding: 8px 15px; }
+      .service-card { width: 45%; height: auto; }
+      .prev, .next { top: 45%; }
     }
   </style>
-  <!-- أيقونات -->
   <script src="https://kit.fontawesome.com/a2e0e6ad4d.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <!-- ===== HEADER ===== -->
   <header>
     <div class="logo"><img src="loweb.png" alt="مختلف"></div>
     <nav>
@@ -252,68 +231,58 @@
       <a href="#services">الخدمات</a>
       <a href="#media">الشروحات</a>
       <a href="#clients">العملاء</a>
-      <a href="#contact">تواصل معنا</a>
+      <a href="#contact">تواصل</a>
     </nav>
   </header>
 
-  <!-- ===== المقدمة ===== -->
   <section id="intro" class="intro">
-    <img src="aa.png" alt="صورة شخصية">
-    <p>أهلاً بك في هويتك الذكية 💎
-    المكان اللي يجمع كل بياناتك وروابطك في لمسة واحدة !
-    سواء كنت صاحب عمل ، أو مؤسسة ، أو شركة ، أو محترف ، أو مبدع — الكارت الذكي هو طريقتك الحديثة للتعريف بنفسك ومشاركة كل معلوماتك بسهولة .
-    فقط قرب جوالك 📱 و عيش التجربة وكن مختلفًا 🔥</p>
+    <img src="aa.png" alt="صورة">
+    <p>أهلاً بك في هويتك الذكية 💎 المكان اللي يجمع كل بياناتك وروابطك في لمسة واحدة! سواء كنت صاحب عمل أو محترف أو مبدع — الكارت الذكي هو طريقك للتعريف بنفسك ومشاركة معلوماتك بسهولة.</p>
   </section>
 
-  <!-- ===== الخدمات ===== -->
   <section id="services">
     <h2>الخدمات</h2>
     <div class="services">
-      <div class="service-card"><img src="هيثم2-removebg-preview.png"><span></span></div>
-      <div class="service-card"><img src="تصميم_1-removebg-preview.png"><span></span></div>
-      <div class="service-card"><img src="هيثم1-removebg-preview.png"><span></span></div>
-      <div class="service-card"><img src="تصميم_1-removebg-preview.png"><span></span></div>
-      <div class="service-card"><img src="هيثم2-removebg-preview.png"><span></span></div>
+      <div class="service-card"><img src="هيثم2-removebg-preview.png"></div>
+      <div class="service-card"><img src="تصميم_1-removebg-preview.png"></div>
+      <div class="service-card"><img src="هيثم1-removebg-preview.png"></div>
+      <div class="service-card"><img src="تصميم_1-removebg-preview.png"></div>
     </div>
   </section>
 
-  <!-- ===== الشروحات ===== -->
   <section id="media">
     <h2>الشروحات</h2>
     <div class="media">
-      <div class="tutorial">
-        <video controls>
-          <source src="vid1.mp4" type="video/mp4"> المتصفح لا يدعم الفيديو.
-        </video>
-      </div>
-      <div class="tutorial"><img src="هيثم.png" alt="صورة شرح"></div>
+      <div class="tutorial"><video controls><source src="vid1.mp4" type="video/mp4"></video></div>
+      <div class="tutorial"><img src="هيثم.png" alt=""></div>
     </div>
   </section>
 
-  <!-- ===== العملاء ===== -->
   <section id="clients">
     <h2>عملاؤنا</h2>
     <div class="gallery">
       <button class="prev">‹</button>
-      <img src="https://via.placeholder.com/300x200/00ffa3/000?text=عميل+1" class="active">
-      <img src="https://via.placeholder.com/300x200/00cc84/000?text=عميل+2">
-      <img src="https://via.placeholder.com/300x200/007a5e/fff?text=عميل+3">
+      <img src="تصميم_1-removebg-preview.png" class="active">
+      <img src="هيثم2-removebg-preview.png">
+      <img src="هيثم1-removebg-preview.png">
+      <img src="هيثم2-removebg-preview.png">
+      <img src="هيثم1-removebg-preview.png">
+
       <button class="next">›</button>
     </div>
   </section>
 
-  <!-- ===== التواصل ===== -->
   <section id="contact">
     <h2>تواصل معنا</h2>
     <div class="buttons">
-      <button class="btn" onclick="window.open('https://wa.me/201234567890', '_blank')">
+      <button class="btn" onclick="window.open('https://wa.me/966547856086', '_blank')">
         <i class="fa-brands fa-whatsapp"></i> واتساب
       </button>
       <button class="btn" onclick="window.open('https://www.instagram.com/a_different1?igsh=MW5xejh4MjMycmQ5aA==', '_blank')">
         <i class="fa-brands fa-instagram"></i> إنستجرام
       </button>
       <button class="btn" onclick="window.open('https://yourlink.com', '_blank')">
-        <i class="fa-solid fa-phone"></i> اطلب الآن وعيش التجربة
+        <i class="fa-solid fa-phone"></i> اطلب الآن
       </button>
     </div>
   </section>
@@ -323,18 +292,18 @@
   </footer>
 
   <script>
-    const images = document.querySelectorAll('.gallery img');
+    const imgs = document.querySelectorAll('.gallery img');
     let current = 0;
-    document.querySelector('.next').addEventListener('click', () => {
-      images[current].classList.remove('active');
-      current = (current + 1) % images.length;
-      images[current].classList.add('active');
-    });
-    document.querySelector('.prev').addEventListener('click', () => {
-      images[current].classList.remove('active');
-      current = (current - 1 + images.length) % images.length;
-      images[current].classList.add('active');
-    });
+    document.querySelector('.next').onclick = () => {
+      imgs[current].classList.remove('active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('active');
+    };
+    document.querySelector('.prev').onclick = () => {
+      imgs[current].classList.remove('active');
+      current = (current - 1 + imgs.length) % imgs.length;
+      imgs[current].classList.add('active');
+    };
   </script>
 
 </body>
