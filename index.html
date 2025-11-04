@@ -22,16 +22,50 @@
       font-family: "Tajawal", sans-serif;
       background: linear-gradient(180deg, #fff, #e8e8e8);
       color: var(--text-dark);
+      overflow-x: hidden;
     }
+    /* ===== الأزرار ===== */
+.buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn {
+  background: var(--main-color);
+  color: #000;
+  font-weight: bold;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 163, 0.5);
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 255, 163, 0.8);
+  background: #00ffc3;
+}
+
+.btn i {
+  margin-left: 6px;
+}
+
 
     /* ====== HEADER ====== */
     header {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 8px 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px 20px;
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
-      z-index: 100;
+      z-index: 1000;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -39,7 +73,7 @@
       backdrop-filter: blur(8px);
     }
 
-    .logo img { height: 35px; width: auto; }
+    .logo img { height: 40px; width: auto; }
 
     nav {
       display: flex;
@@ -71,8 +105,15 @@
       text-align: center;
     }
 
-    h2 { color: var(--main-color); margin-bottom: 20px; font-size: 22px; }
-    p { font-size: 16px; line-height: 1.7; }
+    h2 { 
+      color: var(--main-color); 
+      margin-bottom: 20px; 
+      font-size: 22px; 
+    }
+    p { 
+      font-size: 16px; 
+      line-height: 1.7; 
+    }
 
     /* ===== المقدمة ===== */
     .intro img {
@@ -82,11 +123,11 @@
       box-shadow: 0 0 15px rgba(0, 255, 150, 0.5);
       display: block;
       margin: 0 auto;
-      max-width: 500px;
+      max-width: 600px;
     }
 
     .intro p {
-      max-width: 500px;
+      max-width: 600px;
       margin: 20px auto;
       background: #fafafa;
       padding: 10px;
@@ -94,27 +135,6 @@
       color: var(--text-muted);
       box-shadow: inset 0 0 8px rgba(0, 255, 163, 0.1);
       font-size: 15px;
-    }
-
-    /* ===== الأزرار ===== */
-    .btn {
-      display: inline-block;
-      margin: 8px;
-      padding: 10px 18px;
-      color: #ffffff;
-      background: var(--main-color);
-      border: none;
-      border-radius: 25px;
-      font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: var(--btn-glow);
-      transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #00cc84;
-      transform: scale(1.05);
     }
 
     /* ===== الخدمات ===== */
@@ -152,18 +172,27 @@
     /* ===== الشروحات ===== */
     .media {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 15px;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
     .tutorial {
       background: #fff;
       border-radius: 10px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 320px;
+      width: 45%;
+      max-width: 300px;
       padding: 10px;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .tutorial.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .tutorial img, .tutorial video {
@@ -177,6 +206,14 @@
       width: 90%;
       max-width: 300px;
       margin: 0 auto;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .gallery.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .gallery img {
@@ -213,7 +250,22 @@
       font-size: 13px;
     }
 
+    /* ===== تأثير عند التمرير ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 600px) {
+      header { flex-direction: column; gap: 5px; }
+      .media { flex-direction: column; }
+      .tutorial { width: 90%; }
       h2 { font-size: 20px; }
       .btn { font-size: 13px; padding: 8px 15px; }
       .service-card { width: 45%; height: auto; }
@@ -235,12 +287,16 @@
     </nav>
   </header>
 
-  <section id="intro" class="intro">
+  <section id="intro" class="intro fade-in">
     <img src="aa.png" alt="صورة">
-    <p>أهلاً بك في هويتك الذكية 💎 المكان اللي يجمع كل بياناتك وروابطك في لمسة واحدة! سواء كنت صاحب عمل أو محترف أو مبدع — الكارت الذكي هو طريقك للتعريف بنفسك ومشاركة معلوماتك بسهولة.</p>
+    <p>أهلاً بك في هويتك الذكية 💎
+المكان اللي يجمع كل بياناتك وروابطك في لمسة واحدة !
+سواء كنت صاحب عمل ، أو مؤسسة ، أو شركة ، أو محترف ، أو مبدع - أو عادي — الكارت الذكي هو طريقتك الحديثة للتعريف بنفسك ومشاركة كل معلوماتك بسهولة .
+فقط قرب جوالك  📱
+و عيش التجربة وكن مختلفًا 🔥</p>
   </section>
 
-  <section id="services">
+  <section id="services" class="fade-in">
     <h2>الخدمات</h2>
     <div class="services">
       <div class="service-card"><img src="هيثم2-removebg-preview.png"></div>
@@ -250,7 +306,7 @@
     </div>
   </section>
 
-  <section id="media">
+  <section id="media" class="fade-in">
     <h2>الشروحات</h2>
     <div class="media">
       <div class="tutorial"><video controls><source src="vid1.mp4" type="video/mp4"></video></div>
@@ -258,27 +314,24 @@
     </div>
   </section>
 
-  <section id="clients">
+  <section id="clients" class="fade-in">
     <h2>عملاؤنا</h2>
     <div class="gallery">
       <button class="prev">‹</button>
       <img src="تصميم_1-removebg-preview.png" class="active">
       <img src="هيثم2-removebg-preview.png">
       <img src="هيثم1-removebg-preview.png">
-      <img src="هيثم2-removebg-preview.png">
-      <img src="هيثم1-removebg-preview.png">
-
       <button class="next">›</button>
     </div>
   </section>
 
-  <section id="contact">
+  <section id="contact" class="fade-in">
     <h2>تواصل معنا</h2>
     <div class="buttons">
       <button class="btn" onclick="window.open('https://wa.me/966547856086', '_blank')">
         <i class="fa-brands fa-whatsapp"></i> واتساب
       </button>
-      <button class="btn" onclick="window.open('https://www.instagram.com/a_different1?igsh=MW5xejh4MjMycmQ5aA==', '_blank')">
+      <button class="btn" onclick="window.open('https://www.instagram.com/a_different1', '_blank')">
         <i class="fa-brands fa-instagram"></i> إنستجرام
       </button>
       <button class="btn" onclick="window.open('https://yourlink.com', '_blank')">
@@ -292,6 +345,7 @@
   </footer>
 
   <script>
+    // سلايدر العملاء
     const imgs = document.querySelectorAll('.gallery img');
     let current = 0;
     document.querySelector('.next').onclick = () => {
@@ -304,6 +358,18 @@
       current = (current - 1 + imgs.length) % imgs.length;
       imgs[current].classList.add('active');
     };
+
+    // تأثير التمرير
+    const fadeEls = document.querySelectorAll('.fade-in, .tutorial, .gallery');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible', 'show');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    fadeEls.forEach(el => observer.observe(el));
   </script>
 
 </body>
