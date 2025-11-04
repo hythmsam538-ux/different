@@ -1,376 +1,96 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>صفحة مختلفة</title>
-  <style>
-    :root {
-      --main-color: #00ffa3;
-      --text-dark: #1a1a1a;
-      --text-muted: #555;
-      --btn-glow: 0 0 20px rgba(0, 255, 163, 0.6);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مُختلـف</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  body {
+    font-family: "Tajawal", sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  /* الشريط العلوي */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .logo {
+    font-size: 32px;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px #00ffc8;
+  }
+
+  .icons i {
+    font-size: 22px;
+    color: #000;
+    cursor: pointer;
+    margin: 0 10px;
+  }
+
+  /* شريط الأقسام */
+  .nav-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .nav-buttons button {
+    border: 2px solid #00ffc8;
+    background: none;
+    border-radius: 30px;
+    padding: 6px 18px;
+    font-size: 15px;
+    color: #000;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .nav-buttons button:hover {
+    background-color: #00ffc8;
+    color: #fff;
+  }
+
+  /* مظهر متجاوب للجوال */
+  @media (max-width: 600px) {
+    .logo {
+      font-size: 26px;
     }
-
-    * {
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: "Tajawal", sans-serif;
-      background: linear-gradient(180deg, #fff, #e8e8e8);
-      color: var(--text-dark);
-      overflow-x: hidden;
-    }
-    /* ===== الأزرار ===== */
-.buttons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.btn {
-  background: var(--main-color);
-  color: #000;
-  font-weight: bold;
-  padding: 10px 25px;
-  border: none;
-  border-radius: 30px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 255, 163, 0.5);
-}
-
-.btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(0, 255, 163, 0.8);
-  background: #00ffc3;
-}
-
-.btn i {
-  margin-left: 6px;
-}
-
-
-    /* ====== HEADER ====== */
-    header {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 10px 20px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      backdrop-filter: blur(8px);
-    }
-
-    .logo img { height: 40px; width: auto; }
-
-    nav {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--text-dark);
-      background: transparent;
-      padding: 6px 12px;
-      border: 1px solid var(--main-color);
-      border-radius: 20px;
-      transition: 0.3s;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    nav a:hover {
-      background: var(--main-color);
-      color: #000;
-      box-shadow: var(--btn-glow);
-    }
-
-    section {
-      padding: 100px 15px 60px;
-      text-align: center;
-    }
-
-    h2 { 
-      color: var(--main-color); 
-      margin-bottom: 20px; 
-      font-size: 22px; 
-    }
-    p { 
-      font-size: 16px; 
-      line-height: 1.7; 
-    }
-
-    /* ===== المقدمة ===== */
-    .intro img {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 255, 150, 0.5);
-      display: block;
-      margin: 0 auto;
-      max-width: 600px;
-    }
-
-    .intro p {
-      max-width: 600px;
-      margin: 20px auto;
-      background: #fafafa;
-      padding: 10px;
-      border-radius: 10px;
-      color: var(--text-muted);
-      box-shadow: inset 0 0 8px rgba(0, 255, 163, 0.1);
-      font-size: 15px;
-    }
-
-    /* ===== الخدمات ===== */
-    .services {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .service-card {
-      background: #fff;
-      width: 130px;
-      height: 110px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: 0.3s;
-    }
-
-    .service-card img {
-      width: 90%;
-      height: auto;
-      border-radius: 8px;
-    }
-
-    .service-card:hover {
-      transform: scale(1.04);
-      color: var(--main-color);
-    }
-
-    /* ===== الشروحات ===== */
-    .media {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .tutorial {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      width: 45%;
-      max-width: 300px;
-      padding: 10px;
-      transition: transform 0.5s ease, opacity 0.5s ease;
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .tutorial.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .tutorial img, .tutorial video {
-      width: 100%;
-      border-radius: 10px;
-    }
-
-    /* ===== العملاء ===== */
-    .gallery {
-      position: relative;
-      width: 90%;
-      max-width: 300px;
-      margin: 0 auto;
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .gallery.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .gallery img {
-      width: 100%;
-      border-radius: 10px;
-      display: none;
-      box-shadow: var(--btn-glow);
-    }
-
-    .gallery img.active { display: block; }
-
-    .gallery button {
-      background: var(--main-color);
-      border: none;
-      color: #000;
-      padding: 6px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      transition: 0.3s;
-      font-weight: bold;
-    }
-
-    .prev { left: -30px; }
-    .next { right: -30px; }
-
-    footer {
-      background: #f3f3f3;
-      padding: 15px;
-      text-align: center;
-      color: var(--text-muted);
+    .nav-buttons button {
       font-size: 13px;
+      padding: 5px 12px;
     }
-
-    /* ===== تأثير عند التمرير ===== */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 600px) {
-      header { flex-direction: column; gap: 5px; }
-      .media { flex-direction: column; }
-      .tutorial { width: 90%; }
-      h2 { font-size: 20px; }
-      .btn { font-size: 13px; padding: 8px 15px; }
-      .service-card { width: 45%; height: auto; }
-      .prev, .next { top: 45%; }
-    }
-  </style>
-  <script src="https://kit.fontawesome.com/a2e0e6ad4d.js" crossorigin="anonymous"></script>
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <div class="logo"><img src="loweb.png" alt="مختلف"></div>
-    <nav>
-      <a href="#intro">الرئيسية</a>
-      <a href="#services">الخدمات</a>
-      <a href="#media">الشروحات</a>
-      <a href="#clients">العملاء</a>
-      <a href="#contact">تواصل</a>
-    </nav>
-  </header>
+<header>
+  <div class="icons"><i class="fa-solid fa-bars"></i></div>
+  <div class="logo">مُختلـف</div>
+  <div class="icons"><i class="fa-solid fa-magnifying-glass"></i></div>
+</header>
 
-  <section id="intro" class="intro fade-in">
-    <img src="aa.png" alt="صورة">
-    <p>أهلاً بك في هويتك الذكية 💎
-المكان اللي يجمع كل بياناتك وروابطك في لمسة واحدة !
-سواء كنت صاحب عمل ، أو مؤسسة ، أو شركة ، أو محترف ، أو مبدع - أو عادي — الكارت الذكي هو طريقتك الحديثة للتعريف بنفسك ومشاركة كل معلوماتك بسهولة .
-فقط قرب جوالك  📱
-و عيش التجربة وكن مختلفًا 🔥</p>
-  </section>
-
-  <section id="services" class="fade-in">
-    <h2>الخدمات</h2>
-    <div class="services">
-      <div class="service-card"><img src="هيثم2-removebg-preview.png"></div>
-      <div class="service-card"><img src="تصميم_1-removebg-preview.png"></div>
-      <div class="service-card"><img src="هيثم1-removebg-preview.png"></div>
-      <div class="service-card"><img src="تصميم_1-removebg-preview.png"></div>
-    </div>
-  </section>
-
-  <section id="media" class="fade-in">
-    <h2>الشروحات</h2>
-    <div class="media">
-      <div class="tutorial"><video controls><source src="vid1.mp4" type="video/mp4"></video></div>
-      <div class="tutorial"><img src="هيثم.png" alt=""></div>
-    </div>
-  </section>
-
-  <section id="clients" class="fade-in">
-    <h2>عملاؤنا</h2>
-    <div class="gallery">
-      <button class="prev">‹</button>
-      <img src="تصميم_1-removebg-preview.png" class="active">
-      <img src="هيثم2-removebg-preview.png">
-      <img src="هيثم1-removebg-preview.png">
-      <button class="next">›</button>
-    </div>
-  </section>
-
-  <section id="contact" class="fade-in">
-    <h2>تواصل معنا</h2>
-    <div class="buttons">
-      <button class="btn" onclick="window.open('https://wa.me/966547856086', '_blank')">
-        <i class="fa-brands fa-whatsapp"></i> واتساب
-      </button>
-      <button class="btn" onclick="window.open('https://www.instagram.com/a_different1', '_blank')">
-        <i class="fa-brands fa-instagram"></i> إنستجرام
-      </button>
-      <button class="btn" onclick="window.open('https://yourlink.com', '_blank')">
-        <i class="fa-solid fa-phone"></i> اطلب الآن
-      </button>
-    </div>
-  </section>
-
-  <footer>
-    © 2025 مُـخـتـلـف | جميع الحقوق محفوظة 💎
-  </footer>
-
-  <script>
-    // سلايدر العملاء
-    const imgs = document.querySelectorAll('.gallery img');
-    let current = 0;
-    document.querySelector('.next').onclick = () => {
-      imgs[current].classList.remove('active');
-      current = (current + 1) % imgs.length;
-      imgs[current].classList.add('active');
-    };
-    document.querySelector('.prev').onclick = () => {
-      imgs[current].classList.remove('active');
-      current = (current - 1 + imgs.length) % imgs.length;
-      imgs[current].classList.add('active');
-    };
-
-    // تأثير التمرير
-    const fadeEls = document.querySelectorAll('.fade-in, .tutorial, .gallery');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible', 'show');
-        }
-      });
-    }, { threshold: 0.2 });
-
-    fadeEls.forEach(el => observer.observe(el));
-  </script>
+<div class="nav-buttons">
+  <button><i class="fa-solid fa-house"></i> الرئيسية</button>
+  <button><i class="fa-solid fa-briefcase"></i> الخدمات</button>
+  <button><i class="fa-solid fa-book-open"></i> الشروحات</button>
+  <button><i class="fa-solid fa-star"></i> تقييمات العملاء</button>
+  <button><i class="fa-brands fa-whatsapp"></i> تواصل</button>
+</div>
 
 </body>
 </html>
