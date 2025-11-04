@@ -19,11 +19,33 @@
     body {
       margin: 0;
       font-family: "Tajawal", sans-serif;
-      background: #fff;
+      background: #ffffff;
       color: var(--text-dark);
       overflow-x: hidden;
       padding-top: 80px; /* علشان المحتوى ما يختفي ورا الهيدر */
     }
+    .order-all {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.order-btn {
+  background: #000; /* اللون الرئيسي */
+  color: #fff;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.order-btn:hover {
+  background: #333;
+  transform: scale(1.05);
+}
+
 
     /* ===== الهيدر ===== */
     header {
@@ -68,20 +90,43 @@
     }
 
     .product {
-      background: #fff;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      transition: 0.3s;
-      position: relative;
-    }
+  text-align: center;
+  margin: 20px;
+}
 
-    .product img {
-      width: 100%;
-      border-radius: 8px;
-      aspect-ratio: 1.6 / 1;
-      object-fit: contain;
-    }
+.product img {
+  width: 260px; /* 🔹 حجم أكبر للصورة */
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.product img:hover {
+  transform: scale(1.07); /* 🔹 تأثير تكبير بسيط عند المرور */
+}
+
+.discount {
+  background: black;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  position: relative;
+  top: -10px;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #777;
+}
+
+.new-price {
+  font-weight: bold;
+  font-size: 18px;
+}
+    .product-card img:hover {
+  transform: scale(1.05); /* تأثير تكبير بسيط عند المرور */
+}
 
     .discount {
       background: #000;
@@ -216,7 +261,6 @@
   </div>
   <div class="logo"><img src="loweb.png" alt="مُـخـتـلـف"></div>
   <div class="header-left">
-    <i class="fa-solid fa-magnifying-glass search-icon"></i>
     <i class="fa-solid fa-bag-shopping cart-icon"></i>
   </div>
 </header>
@@ -409,6 +453,10 @@
       <p class="new-price">LE 299.00</p>
     </div>
   </div>
+  <div class="order-all">
+  <button class="order-btn">اطلب الآن</button>
+</div>
+
 </section>
 
 <section class="tutorials" id="tutorials">
