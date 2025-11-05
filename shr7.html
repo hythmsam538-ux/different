@@ -134,36 +134,38 @@
       margin-bottom: 40px;
     }
 
-    .content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-      max-width: 1100px;
-      margin: auto;
-    }
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: auto;
+}
 
-    .video-box, .image-box {
-      flex: 1 1 450px;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
+/* حجم الفيديو والصورة */
+.video-box video,
+.image-box img {
+  width: 90%;
+  max-width: 250px;   /* 🔹 تقدر تغيرها لتكبير أو تصغير الحجم */
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #00e0ac;
+  object-fit: contain;
+}
 
-    .video-box iframe {
-      width: 100%;
-      height: 300px;
-      border: none;
-      border-radius: 15px;
-    }
+/* ✅ لجعلهم متناسقين على الجوال */
+@media (max-width: 600px) {
+  .video-box video,
+  .image-box img {
+    max-width: 200px;  /* 🔹 هنا الحجم في الجوال */
+  }
+  .content {
+    gap: 10px;
+  }
+}
 
-    .image-box img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 15px;
-    }
 
     p.desc {
       margin-top: 35px;
@@ -206,7 +208,7 @@
     <i class="fa-solid fa-xmark" id="closeBtn"></i>
   </div>
   <nav>
-      <a href="website.html">🏠 الرئيسية</a>
+      <a href="index.html">🏠 الرئيسية</a>
      <a href="about.html">عن مُـخـتـلـف</a>
       <a href="features.html">✨ المميزات</a>
       <a href="faq.html">❓ الأسئلة الشائعة</a>
@@ -236,7 +238,7 @@
 
     <!-- صندوق الصورة -->
 <div class="image-box" style="flex: 1 1 300px; max-width: 400px; display: flex; justify-content: center;">
-  <img src="هيثم.png" 
+  <img src="منتج اسود.png" 
        alt="شرح كارت مُـخـتـلـف"
        style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 0 10px #00e0ac; object-fit: contain;">
 </div>
@@ -245,10 +247,7 @@
 </section>
 
 
-  <p class="desc">
-    في هذا الفيديو بنشرح كيفية استخدام كارت مُـخـتـلـف بطريقة سهلة وبسيطة.  
-    كل ما عليك هو تقريب الكارت من الجوال، وهيفتح صفحتك الخاصة تلقائيًا بدون تطبيقات أو إعدادات معقدة.  
-    اكتشف كيف تربط بياناتك وروابطك وتعدلها في أي وقت.
+  <p class="desc">في هذا الفيديو بنوضحلك كيفية عمل كارت مُـخـتـلـف بطريقة سهلة وبسيطة. كل ما عليك هو تقريب الكارت من الجوال، وهيفتح صفحتك الخاصة تلقائيًا بدون تطبيقات أو إعدادات معقدة. 
   </p>
 </section>
 
