@@ -26,6 +26,37 @@
       overflow-x: hidden;
       padding-top: 80px;
     }
+/* CSS المحسّن: ضعها داخل <style> أو في ملف CSS خارجي */
+.discount-bar {
+  background: linear-gradient(90deg, #000000, #000000);
+  color: #fff;
+  text-align: center;
+  font-size: 1.05rem;      /* أقل شوية مناسب للموبايل */
+  font-weight: 700;
+  padding: 10px 12px;
+  letter-spacing: 0.6px;
+  /* ظل نص بسيط لتحسين الوضوح */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  /* لو تحب الانيميشن شغّل السطرين التاليين */
+  animation: glow 2s infinite alternate;
+  -webkit-animation: glow 2s infinite alternate; /* بادئة */
+  z-index: 999; /* يتأكد إنه فوق المحتوى */
+}
+
+/* animation (اختياري) */
+@keyframes glow {
+  from { text-shadow: 0 0 5px #fff, 0 0 10px #ffffff; }
+  to   { text-shadow: 0 0 15px #fff, 0 0 30px #00C6FF; }
+}
+@-webkit-keyframes glow {
+  from { text-shadow: 0 0 5px #fff, 0 0 10px #ffffff; }
+  to   { text-shadow: 0 0 15px #fff, 0 0 30px #ffffff; }
+}
+
+/* استجابة للموبايل: نص أصغر لو الشاشة صغيرة جدًا */
+@media (max-width: 420px) {
+  .discount-bar { font-size: 0.95rem; padding: 8px 10px; }
+}
 
     /* ===== الهيدر ===== */
     header {
@@ -115,6 +146,8 @@
     .product:hover {
       transform: scale(1.03);
     }
+  
+
 
     .product img {
       width: 100%;
@@ -126,20 +159,15 @@
     .old-price {
       text-decoration: line-through;
       color: #777;
-      font-size: 18px;
+      font-size: 16px;
       margin: 5px 0;
     }
 
     .new-price {
-        color: #00ffae; /* أخضر فلورسنت واضح */
+        color: #000000; /* أخضر فلورسنت واضح */
   font-weight: 800;
   font-size: 20px;
-  text-shadow: 
-     0 0 5px rgba(0, 0, 0, 0.8),
-    0 0 10px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(0, 0, 0, 0.4);
-  letter-spacing: 1px;
-    }
+      }
 
     .price-sa {
       color: #25D366;
@@ -147,6 +175,16 @@
       font-size: 15px;
       margin-top: 2px;
     }
+  .product h3 {
+  font-size: 14px;
+  font-weight: 400; /* بدل 700 أو bold */
+  margin: 10px 0 5px;
+  color: #111; /* لون هادي */
+}
+
+
+
+
 
     /* زر الطلب */
     .order-all {
@@ -258,7 +296,11 @@
     <i class="fa-solid fa-bag-shopping cart-icon"></i>
   </div>
 </header>
-
+</header>
+<!-- 🔽 شريط الخصم -->
+<div class="discount-bar">
+  🎉 خصم 50% على جميع الكروت لفترة محدودة! 🎉
+</div>
 <!-- القائمة الجانبية -->
 <div class="side-menu" id="sideMenu">
   <div class="top">
@@ -284,49 +326,49 @@
 
 <!-- قسم المنتجات -->
 <section class="products" id="cards">
-  <h2>الأكثر مبيعاً</h2>
+  <h2>البطاقات الأكثر مبيعاً </h2>
   <div class="product-grid">
 
     <div class="product">
       <img src="منتج ابيض.png" alt="White Card">
-      <h3>كارت مُـخـتـلـف الأبيض</h3>
+      <h3>Different | White Card</h3>
       <p class="old-price">SAR 100</p>
-      <p class="new-price">SAR 50</p>
+      <p class="new-price">SAR : 50</p>
     </div>
 
     <div class="product">
       <img src="منتج اسود.png" alt="Black Card">
-      <h3>كارت مُـخـتـلـف الأسود</h3>
+      <h3>Different | Black Card</h3>
       <p class="old-price">SAR 100</p>
-      <p class="new-price">SAR 50</p>
+      <p class="new-price">SAR : 50</p>
+    </div>
+
+     <div class="product">
+      <img src="منتج بمبي.png" alt="Wood Card">
+      <h3>Different | Pink Card</h3>
+      <p class="old-price">SAR 100</p>
+      <p class="new-price">SAR : 50</p>
     </div>
 
     <div class="product">
+      <img src="منتج ازرق.png" alt="Silver Card">
+      <h3>Different | Blue Card</h3>
+      <p class="old-price">SAR 100</p>
+      <p class="new-price">SAR : 50</p>
+    </div>
+
+<div class="product">
       <img src="منتج بيرجندي.png" alt="Gold Card">
-      <h3>كارت مُـخـتـلـف الذهبي</h3>
+      <h3>Different | Burgundy Card</h3>
       <p class="old-price">SAR 100</p>
-      <p class="new-price">SAR 50</p>
+      <p class="new-price">SAR : 50</p>
     </div>
-
+   
     <div class="product">
-      <img src="تصميم_1-removebg-preview.png" alt="Silver Card">
-      <h3>كارت مُـخـتـلـف الفضي</h3>
+      <img src="منتج مؤسسة.png" alt="Blue Card">
+      <h3> Different | special cards for your organization</h3>
       <p class="old-price">SAR 100</p>
-      <p class="new-price">SAR 50</p>
-    </div>
-
-    <div class="product">
-      <img src="هيثم1-removebg-preview.png" alt="Wood Card">
-      <h3>كارت مُـخـتـلـف الخشبي</h3>
-      <p class="old-price">SAR 100</p>
-      <p class="new-price">SAR 50</p>
-    </div>
-
-    <div class="product">
-      <img src="هيثم2-removebg-preview.png" alt="Blue Card">
-      <h3>كارت مُـخـتـلـف الأزرق</h3>
-      <p class="old-price">SAR 100</p>
-      <p class="new-price">SAR 50</p>
+      <p class="new-price">SAR : 50</p>
     </div>
 
   </div>
