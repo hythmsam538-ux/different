@@ -7,19 +7,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #fafafa;
-      margin-top: 60px;
-      border-top: 1px solid #eee;
-      font-weight: 500;
-    }
-    :root {
-      --main-color: #00ffc3;
-      --text-dark: #111;
-    }
-
+     :root {
+    --main-color: #00b894; /* تركواز غامق وواضح */
+    --text-dark: #111;
+    --bg-light: #f4f8fb;
+  }
     * {
       box-sizing: border-box;
       scroll-behavior: smooth;
@@ -28,11 +20,10 @@
     body {
       margin: 0;
       font-family: "Tajawal", sans-serif;
-      background: #ffffff;
+      background: #fff;
       color: var(--text-dark);
       overflow-x: hidden;
       padding-top: 80px;
-      
     }
 
     /* ===== الهيدر ===== */
@@ -47,6 +38,7 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #eee;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .header-left, .header-right {
@@ -100,14 +92,14 @@
     .side-menu nav {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 18px;
       margin-top: 25px;
     }
 
     .side-menu nav a {
       text-decoration: none;
       color: #000;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 500;
       transition: 0.3s;
     }
@@ -132,29 +124,40 @@
       color: var(--main-color);
     }
 
-    /* ===== محتوى الصفحة ===== */
+    /* ===== المحتوى ===== */
     section {
-      max-width: 900px;
-      margin: 120px auto 40px;
-background-color: #eef6ff;
-color: #111;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      padding: 40px 25px;
+      max-width: 850px;
+      margin: 120px auto 50px;
+      background-color: var(--bg-light);
+      color: #111;
+      border-radius: 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      padding: 45px 35px;
       line-height: 1.9;
     }
 
     section h2 {
       text-align: center;
       color: #000;
-      font-size: 28px;
+      font-size: 30px;
       margin-bottom: 20px;
+      position: relative;
+    }
+
+    section h2::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: var(--main-color);
+      margin: 12px auto 0;
+      border-radius: 3px;
     }
 
     .about-text {
       font-size: 18px;
       text-align: justify;
-      color: #444;
+      color: #333;
     }
 
     .highlight {
@@ -171,6 +174,18 @@ color: #111;
       margin-bottom: 12px;
       font-size: 17px;
       list-style: "💎 ";
+      color: #222;
+    }
+
+    .points li::marker {
+      font-size: 20px;
+    }
+
+    .about-text:last-of-type {
+      margin-top: 30px;
+      font-weight: 500;
+      text-align: center;
+      font-size: 19px;
     }
 
     /* ===== زر الواتساب ===== */
@@ -186,12 +201,28 @@ color: #111;
       font-size: 18px;
       display: flex;
       align-items: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      transition: 0.3s;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #1ebe5d;
+      transform: scale(1.05);
     }
 
     .whatsapp-btn i {
       margin-left: 10px;
       font-size: 22px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #fafafa;
+      border-top: 1px solid #eee;
+      font-weight: 500;
+      color: #444;
+      font-size: 15px;
     }
 
     @media (max-width: 600px) {
@@ -230,11 +261,10 @@ color: #111;
       <i class="fa-solid fa-xmark" id="closeBtn"></i>
     </div>
     <nav>
-      <a href="index.html">🏠 الرئيسية</a>
+      <a href="website.html">🏠 الرئيسية</a>
       <a href="features.html">✨ المميزات</a>
- <a href="shr7.html">شرح كيف يعمل📘</a>
+      <a href="shr7.html">📘 كيف يعمل</a>
       <a href="faq.html">❓ الأسئلة الشائعة</a>
-      
     </nav>
     <div class="social">
       <a href="https://www.instagram.com/a_different1" target="_blank"><i class="fa-brands fa-instagram"></i></a>
@@ -244,30 +274,30 @@ color: #111;
 
   <!-- ===== المحتوى ===== -->
   <section>
-    <h2>عن مُـخـتـلـف | هويتك الذكية 💡</h2>
+    <h2> مُـخـتـلـف | هويتك الذكية 💡</h2>
     <p class="about-text">
-      <span class="highlight">مُـخـتـلـف</span> مش مجرد كارت ذكي — هو أسلوب جديد للتعريف بنفسك بشكل احترافي وسهل.  
+      <span class="highlight">مُـخـتـلـف</span> مش مجرد كارت ذكي — هو أسلوب جديد للتعريف بنفسك بطريقة أنيقة واحترافية.  
       كل بياناتك، حساباتك، وروابطك في مكان واحد أنيق يوصلها أي شخص بلمسة واحدة على جواله 📱  
-      صُمم ليكون أداة تُعبّر عن <span class="highlight">هويتك، احترافيتك، وتميزك</span> في كل مقابلة أو عمل.
+      صُمم ليكون أداة تعبّر عن <span class="highlight">هويتك، احترافيتك، وتميّزك</span> في كل مقابلة أو مناسبة.
     </p>
 
     <ul class="points">
       <li>تجربة استخدام سهلة وسريعة بدون تطبيقات.</li>
-      <li>تصميم أنيق يعكس شخصيتك وهويتك الرقمية.</li>
+      <li>تصميم أنيق يترك أول انطباع مميز لا يُنسى.</li>
       <li>إمكانية تحديث بياناتك في أي وقت بكل سهولة.</li>
       <li>يدعم جميع أنواع الجوالات الحديثة.</li>
-      <li>مناسب للأفراد والشركات ورواد الأعمال.</li>
+      <li>مناسب للأفراد، الشركات، وروّاد الأعمال.</li>
     </ul>
 
-    <p class="about-text" style="margin-top:25px;">
-      انضم إلى آلاف المستخدمين اللي اختاروا يكونوا <span class="highlight">مُـخـتـلـف</span> — لأن التميز مش صدفة،  
-      هو أسلوب حياة 💎
+    <p class="about-text">
+      انضم إلى مئات المستخدمين اللي اختاروا يكونوا <span class="highlight"> مُـخـتـلـفـيـن</span> —  
+      لأن أول انطباع دائمًا يستحق أن يكون استثنائي 💎
     </p>
   </section>
 
   <!-- ===== زر الواتساب ===== -->
   <a href="https://wa.me/message/364PZMOXC2UWA1" class="whatsapp-btn" target="_blank">
-     أطلب الأن 
+   أطلب الآن
   </a>
 
   <script>
@@ -294,6 +324,6 @@ color: #111;
     });
   </script>
 
-<footer>© 2025 مُـخـتـلـف | جميع الحقوق محفوظة 💎</footer>
+  <footer>© 2025 مُـخـتـلـف | جميع الحقوق محفوظة 💎</footer>
 </body>
 </html>
