@@ -59,6 +59,22 @@
     <div class="hero-cta">
       <a href="https://wa.me/966547856086" class="hero-btn">ابدأ تميزك الآن</a>
 <a href="#cards" class="hero-btn ghost">البطاقات</a>
+      <!-- زر HTML (ممكن تستخدمه مكان زر "سعر مصر") -->
+<a href="#" id="waPriceBtn" class="hero-btn ghost">أستفسر عن سعر مصر ! </a>
+
+<script>
+  // رقمك بالصيغة الدولية (بدون +) - هنا استخدمت: 966547856086
+  const waPhone = '966547856086';
+
+  // الرسالة بالضبط كما كتبتها
+  const waMessage = 'السلام عليكم، ممكن أعرف سعر كارت مختلف ؟';
+
+  document.getElementById('waPriceBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    const url = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(waMessage);
+    window.open(url, '_blank');
+  });
+</script>
     </div>
   </div>
 </section>
