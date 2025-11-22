@@ -70,11 +70,7 @@ header {
 
 }
 
-.nav-logo img {
-  width: 250px;   /* الحجم الافتراضي على الكمبيوتر */
-  height: auto;
-  object-fit: contain;
-}
+
 
 /* على الجوال */
 @media (max-width: 768px) {
@@ -214,21 +210,13 @@ footer {
   background: linear-gradient(90deg, var(--accent), var(--accent2));
   padding: 6px 8px;
   border-radius: 8px;
-  color: #021226;
+  color: #000000;
   font-weight: 900;
   font-size: 12px;
 }
 
 /* ========== المودال ========== */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 6, 19, 0.7);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
+
 
 .modal {
   max-width: 900px;
@@ -1042,3 +1030,141 @@ font-size: 32px;
   color: #d0d0d0;
   font-size: 15px;
 }
+
+
+
+/* زر الجرس الأحمر */
+.alert-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  background: red;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 0 12px rgba(65, 95, 122, 0.671);
+  transition: 0.3s;
+}
+
+
+
+/* على الجوال يكون يسار اللوجو */
+/* زر الجرس جنب اللوجو على الجوال */
+@media (max-width: 768px) {
+  .alert-btn {
+    position: absolute !important;
+    top: 50%;
+    left: 20px;    /* 👈 الزر يجي جنب اللوجو */
+    right: auto;
+    bottom: auto;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+  }
+}
+
+
+
+/* الشريط الزجاجي */
+.discount-bar {
+  position: fixed;
+  top: -80px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fdfdfd;
+  font-weight: 800;
+  font-size: 20px;
+  z-index: 9998;
+  transition: top 0.4s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+/* زر الإغلاق داخل الشريط */
+.hide-bar {
+  position: absolute;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* إصلاح تداخل الزر الأحمر */
+.alert-btn {
+  bottom: 30px;
+  right: 30px;
+  z-index: 99999 !important;
+}
+/* زر الجرس على الكمبيوتر – يمين اللوجو */
+@media (min-width: 769px) {
+  .alert-btn {
+    position: absolute;
+    top: 30px;          /* مستوى ارتفاعه */
+    right: 140px;       /* يمين اللوجو حسب مكانه بالضبط */
+    width: 50px;
+    height: 50px;
+    bottom: auto;
+    left: auto;
+  }
+}
+
+
+/* على الجوال – حركه تحت الشريط */
+/* زر الجرس جنب اللوجو على الجوال */
+@media (max-width: 768px) {
+  .alert-btn {
+    position: absolute !important;
+    top: 57px;         /* 👈 مستوى أعلى الهيدر */
+    left: 12px;        /* 👈 يسار اللوجو مباشرة */
+    right: auto;
+    bottom: auto;
+    width: 48px;
+    height: 48px;
+    margin: 0;
+    transform: none !important;
+  }
+}
+
+
+/* إصلاح زر × */
+/* زر الإغلاق على اليسار */
+.hide-bar {
+  left: 6px !important;
+  right: auto !important;
+  top: 10px;
+  transform: translateY(-50%);
+  font-size: 28px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* الشريط يكون تحت الهيدر بدقة */
+.discount-bar {
+  top: -80px;
+  height: 55px;
+  padding-top: 5px;
+}
+
+/* لما يظهر يكون تحت الهيدر مباشرة */
+.show-discount {
+  top: 100px !important; /* 👈 نفس ارتفاع الهيدر */
+}
+
