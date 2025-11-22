@@ -4,10 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>    مُـخـتـلـف | هويتك الذكية </title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="S.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="icon" type="image/jpeg" href="IMG_٢٠٢٥١١٠٣_١٨١٠٣٥.jpg">
+<link rel="icon" type="image/png" href="logo.jpeg">
+<link rel="stylesheet" href="aos.css" media="print" onload="this.media='all'">
+
   <!-- أضف هذا في <head> -->
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
@@ -41,10 +43,21 @@
 
   <!-- اللوجو في المنتصف -->
   <div class="nav-logo">
-    <img src="logo-removebg-preview.png" alt="شعار الموقع" />
+    <img src="logo-removebg-preview.png" loading="lazy" alt="شعار الموقع" />
   </div>
 
 </header>
+<!-- زر الجرس + شريط الخصومات -->
+<button id="alertBtn" class="alert-btn">
+  <i class="fa-solid fa-bell"></i>
+</button>
+
+<div id="discountBar" class="discount-bar">
+  <span>🔥 خصم 50% في السعودية — وخصم 43% في مصر
+اختار بطاقتك الآن قبل انتهاء العرض !</span>
+  <button id="hideBar" class="hide-bar">×</button>
+</div>
+
 <!-- ===== HERO SECTION ===== -->
 <section class="hero" id="hero">
   <div class="hero-overlay"></div>
@@ -59,15 +72,15 @@
     <div class="hero-cta">
       <a href="https://wa.me/966547856086" class="hero-btn">ابدأ تميزك الآن</a>
 <a href="#cards" class="hero-btn ghost">البطاقات</a>
-      <!-- زر HTML (ممكن تستخدمه مكان زر "سعر مصر") -->
-<a href="#" id="waPriceBtn" class="hero-btn ghost">أستفسر عن سعر مصر ! </a>
+<!-- زر HTML (ممكن تستخدمه مكان زر "سعر مصر") -->
+<a href="#" id="waPriceBtn" class="hero-btn ghost">أستفسر عن سعر مصر </a>
 
 <script>
   // رقمك بالصيغة الدولية (بدون +) - هنا استخدمت: 966547856086
   const waPhone = '966547856086';
 
   // الرسالة بالضبط كما كتبتها
-  const waMessage = 'السلام عليكم ، ممكن أعرف سعر كارت مختلف في مصر ؟';
+  const waMessage = 'السلام عليكم، ممكن أعرف سعر كارت مختلف ؟';
 
   document.getElementById('waPriceBtn').addEventListener('click', function(e){
     e.preventDefault();
@@ -75,11 +88,14 @@
     window.open(url, '_blank');
   });
 </script>
+
+
     </div>
   </div>
 </section>
 <!-- ===== end HERO ===== -->
 
+ <!-- زر التنبيه -->
 
 <!-- القائمة الجانبية للجوال -->
  
@@ -218,7 +234,7 @@
       <!-- Product 1 -->
       <div class="card">
         <div class="badge">الأكثر مبيعا</div>
-        <div class="img"><img src="منتج اسود.png" alt="NTAG215 Pack 10"/></div>
+        <div class="img"><img src="منتج اسود.png" loading="lazy" alt="NTAG215 Pack 10"/></div>
         <div class="title">Different | Black Card</div>  
      
         <div class="price-box">
@@ -235,7 +251,7 @@
       <!-- Product 2 -->
       <div class="card">
 
-        <div class="img"><img src="منتج ازرق.png" alt="NTAG215 Pack 50"/></div>
+        <div class="img"><img src="منتج ازرق.png" loading="lazy" alt="NTAG215 Pack 50"/></div>
         <div class="title">Different | Blue Card</div>  
      
         <div class="price-box">
@@ -250,7 +266,7 @@
 
       <!-- Product 3 -->
       <div class="card">
-        <div class="img"><img src="منتج بيرجندي.png" alt="NTAG215 Pack 200"/></div>
+        <div class="img"><img src="منتج بيرجندي.png" loading="lazy" alt="NTAG215 Pack 200"/></div>
         <div class="title">Different | Burgundy  Card</div>  
      
         <div class="price-box">
@@ -265,7 +281,7 @@
 
       <!-- Product 4 -->
       <div class="card">
-        <div class="img"><img src="منتج ابيض.png" alt="PVC UV Pack 50"/></div>
+        <div class="img"><img src="منتج ابيض.png" loading="lazy" alt="PVC UV Pack 50"/></div>
        <div class="title">Different | White   Card</div>  
      
         <div class="price-box">
@@ -280,7 +296,9 @@
 
       <!-- Product 5 -->
       <div class="card">
-        <div class="img"><img src="منتج بمبي.png" alt="Inkjet PVC Pack 50"/></div>
+                <div class="badge">الأكثر مبيعا</div>
+
+        <div class="img"><img src="منتج بمبي.png" loading="lazy" alt="Inkjet PVC Pack 50"/></div>
         <div class="title">Different | Pink    Card</div>  
      
         <div class="price-box">
@@ -295,7 +313,7 @@
 
       <!-- Product 6 -->
       <div class="card">
-        <div class="img"><img src="منتج مؤسسة.png" alt="Special Card"/></div>
+        <div class="img"><img src="منتج مؤسسة.png" loading="lazy" alt="Special Card"/></div>
         <div class="title">Different |  Special cards for your organization</div>  
      
         <div class="price-box">
@@ -313,7 +331,7 @@
   <div class="footer-container">
 
     <div class="footer-section">
-      <img src="logo-removebg-preview.png" class="footer-logo" alt="logo" />
+      <img src="logo-removebg-preview.png" loading="lazy" class="footer-logo" alt="logo" />
       <p>
 كارت مُـخـتـلـف هو بطاقتك الذكية العصرية اللي تجمع كل معلوماتك في مكان واحد.
 بمجرد ما يلمس أي جوال، تظهر صفحتك اللي فيها حساباتك وروابطك وأرقامك فورًا… بدون تطبيقات وبدون أي تعقيد.
@@ -372,15 +390,11 @@
   </div>
   <!-- زر الرجوع للأعلى -->
 <button id="backToTop" title="الرجوع للأعلى">↑</button>
-  <script src="script.js"></script>
+  <script src="S.js"></script>
+<script src="S.js" defer></script>
 
 
 
 
 </body>
 </html>
-
-
-
-
-
