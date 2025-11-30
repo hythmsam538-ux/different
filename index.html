@@ -178,22 +178,66 @@ gtag('config', 'G-9NXMDENGNZ');
       <a href="https://wa.me/966547856086" class="hero-btn">ابدأ تميزك الآن</a>
 <a href="#cards" class="hero-btn ghost">البطاقات</a>
 <!-- زر HTML (ممكن تستخدمه مكان زر "سعر مصر") -->
-<a href="#" id="waPriceBtn" class="hero-btn ghost">أستفسر عن سعر مصر </a>
+<button id="showPriceBtn" class="hero-btn ghost">أظهر سعر البطاقة في مصر</button>
+    </div>
 
+<div id="priceDisplay"
+     style="margin-top:40px; display:none; opacity:0; transition:opacity .7s ease;">
+
+  <!-- الكارت الزجاجي -->
+  <div style="max-width:340px; margin:auto; padding:28px 20px 32px;
+              background:rgba(75, 43, 161, 0.75); backdrop-filter:blur(10px);
+              border:1px solid rgba(0,0,0,.06); border-radius:24px;
+              box-shadow:0 8px 28px rgba(0,0,0,.06);
+              text-align:center; font-family:'Cairo',sans-serif; color:#222;">
+
+    <!-- العنوان -->
+    <div style="font-size:22px; font-weight:600; color:#ffffff; margin-bottom:5px;">
+      خصم لفترة محدودة
+    <div style="display:inline-block; width:40px; height:40px; line-height:30px;
+                background:#e50914; color:#fff; font-size:20px; font-weight:70;
+                border-radius:50%; margin-bottom:15px;">
+      43%
+    </div></div>
+
+    <!-- دائرة الخصم -->
+    
+
+    <!-- سطر السعرين -->
+    <div style="display:flex; align-items:baseline; justify-content:center; gap:10px;
+                font-size:34px; font-weight:700; color:#ffffff; margin-bottom:6px;">
+      199 جــنــيــة
+      <span style="font-size:25px; color:#777; font-weight:400;">
+        بدل <span style="text-decoration:line-through;">350 ج</span>
+      </span>
+    </div>
+
+    <!-- CTA -->
+    <div style="margin-top:20px; font-size:20px; font-weight:500; color:#ffffff;">
+      مستني إيه؟ اطلب كارتك دلوقتي
+    </div>
+  </div>
+</div>
 <script>
-  // رقمك بالصيغة الدولية (بدون +) - هنا استخدمت: 966547856086
-  const waPhone = '966547856086';
+  const priceBtn = document.getElementById('showPriceBtn');
+  const priceDiv = document.getElementById('priceDisplay');
 
-  // الرسالة بالضبط كما كتبتها
-  const waMessage = 'السلام عليكم، ممكن أعرف سعر كارت مختلف ؟';
-
-  document.getElementById('waPriceBtn').addEventListener('click', function(e){
+  priceBtn.addEventListener('click', function(e){
     e.preventDefault();
-    const url = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(waMessage);
-    window.open(url, '_blank');
+
+    priceDiv.style.display = 'block';
+    setTimeout(() => {
+      priceDiv.style.opacity = '1';
+    }, 10);
+
+    setTimeout(() => {
+      priceDiv.style.opacity = '0';
+      setTimeout(() => {
+        priceDiv.style.display = 'none';
+      }, 800);
+    }, 2000);
   });
 </script>
-
 
     </div>
   </div>
