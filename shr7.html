@@ -1,0 +1,2181 @@
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>مُـخـتـلـف | العرض الواقعي</title>
+  
+  <!-- السيرش -->
+  <meta name="description" content="كارت مُـخـتـلـف | هويتك الذكية لعرض معلوماتك وروابطك باحترافية. بطاقة NFC تتيح لك مشاركة بياناتك بلمسة واحدة بشكل عصري وراقي.">
+  <meta name="keywords" content="كارت ذكي, مختلف, مميز, NFC card, بطاقة ذكية, كارت NFC, بطاقة NFC, كارت أعمال, كارت بيزنس, Smart Card, هويتك الذكية">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <!-- AOS للأنيميشنات -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  
+  <style>
+    /* ===== RESET & BASE STYLES ===== */
+    :root {
+        --primary: #4361ee;
+        --secondary: #3a0ca3;
+        --accent: #4cc9f0;
+        --danger: #f72585;
+        --success: #4ade80;
+        --warning: #f59e0b;
+        --dark: #0f172a;
+        --dark-light: #1e293b;
+        --light: #f8fafc;
+        --gray: #64748b;
+        --gray-light: #94a3b8;
+        --radius: 12px;
+        --radius-sm: 8px;
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --main-color: #00e0ac;
+        --text-dark: #1a1a1a;
+        --card: #ffffff;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+    }
+
+    body {
+        font-family: 'Segoe UI', 'Cairo', 'Noto Kufi Arabic', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-top: 130px; /* زيادة المساحة بسبب شريط الخصم */
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    button {
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background: none;
+        font-family: inherit;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    section {
+        padding: 80px 0;
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    /* ===== شريط الخصم ===== */
+   .discount-bar {
+          position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--danger), #ff6b9d);
+            color: white;
+            padding: 12px 0;
+            z-index: 1100;
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
+            animation: pulseDiscount 2s infinite;
+            transition: var(--transition);
+    }
+
+    .discount-bar.hidden {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    .discount-bar span {
+        background: #1b175e;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin: 0 8px;
+        font-weight: 800;
+    }
+
+    @keyframes pulseDiscount {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.9; }
+    }
+
+    /* ===== IMPROVED HEADER ===== */
+    .header {
+        position: fixed;
+        top: 40px; /* تعديل لأن شريط الخصم يأخذ 40px */
+        left: 0;
+        width: 100%;
+        background: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        z-index: 1000;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        padding: 15px 0;
+        transition: var(--transition);
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
+        width: 100%;
+    }
+
+    /* ===== تنسيق الهيدر للكمبيوتر ===== */
+    /* المجموعة اليسرى: اللوجو فقط (للكمبيوتر) */
+    .header-left-desktop {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        justify-content: flex-start;
+    }
+
+    /* الروابط في المنتصف (للكمبيوتر) */
+    .header-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+    }
+
+    /* المجموعة اليمنى: السلة فقط (للكمبيوتر) */
+    .header-right-desktop {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        justify-content: flex-end;
+    }
+
+    /* الروابط */
+    .nav {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    
+    /* سلة التسوق للكمبيوتر */
+    .cart-icon.desktop {
+        margin-right: 15px;
+    }
+
+    /* ===== تنسيق الهيدر للجوال ===== */
+    .header-mobile {
+        display: none;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo img {
+        height: 70px;
+        width: auto;
+        transition: transform 0.3s ease;
+        filter: drop-shadow(0 2px 12px rgba(76, 201, 240, 0.4));
+    }
+
+    .logo img:hover {
+        transform: scale(1.05);
+    }
+
+    /* الروابط */
+    .nav-link {
+        color: var(--light);
+        font-weight: 600;
+        font-size: 16px;
+        padding: 10px 18px;
+        border-radius: var(--radius-sm);
+        transition: var(--transition);
+        position: relative;
+        white-space: nowrap;
+    }
+
+    .nav-link:hover {
+        color: var(--accent);
+        background: rgba(76, 201, 240, 0.1);
+    }
+
+    .nav-link.active {
+        color: var(--accent);
+        background: rgba(76, 201, 240, 0.1);
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 18px;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--primary));
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        width: calc(100% - 36px);
+    }
+
+    /* سلة التسوق */
+    .cart-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+
+    .cart-icon:hover {
+        background: rgba(76, 201, 240, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .cart-icon i {
+        font-size: 20px;
+        color: var(--light);
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: linear-gradient(135deg, var(--danger), #ff6b9d);
+        color: white;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(247, 37, 133, 0.3);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    /* زر القائمة للجوال */
+    .menu-toggle {
+        display: none;
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: var(--radius-sm);
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: white;
+        transition: var(--transition);
+        z-index: 1002;
+    }
+
+    .menu-toggle:hover {
+        transform: rotate(90deg);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    /* ===== IMPROVED MOBILE MENU ===== */
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 320px;
+        height: 100vh;
+        background: var(--dark);
+        z-index: 1101;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        padding: 100px 30px 30px;
+        overflow-y: auto;
+    }
+
+    .mobile-menu.active {
+        right: 0;
+    }
+
+    /* زر إغلاق القائمة الجانبية */
+    .menu-close {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--danger), #ff6b9d);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: white;
+        box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
+        transition: var(--transition);
+        z-index: 1002;
+    }
+
+    .menu-close:hover {
+        transform: rotate(90deg) scale(1.1);
+    }
+
+    /* عنوان القائمة الجانبية */
+    .mobile-menu-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    .mobile-menu-header img {
+        height: 80px;
+        filter: drop-shadow(0 2px 10px rgba(76, 201, 240, 0.4));
+    }
+
+    .mobile-menu-header h3 {
+        font-size: 20px;
+        color: var(--accent);
+        font-weight: 700;
+    }
+
+    /* روابط القائمة الجانبية */
+    .mobile-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 16px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: var(--transition);
+        font-size: 16px;
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+        background: rgba(76, 201, 240, 0.1);
+        border-color: var(--accent);
+        transform: translateX(-8px);
+    }
+
+    .mobile-nav-link i {
+        width: 20px;
+        text-align: center;
+        color: var(--accent);
+        font-size: 18px;
+    }
+
+    /* وسائل التواصل في القائمة الجانبية */
+    .mobile-social {
+        margin-top: auto;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-social h4 {
+        margin-bottom: 20px;
+        color: var(--light);
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .social-icons a {
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        transition: var(--transition);
+    }
+
+    .social-icons a:hover {
+        background: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+        z-index: 1100;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+
+    .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* ===== SECTIONS COMMON STYLES ===== */
+    .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+        font-size: clamp(2.2rem, 4vw, 3.2rem);
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .section-title p {
+        color: var(--gray-light);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+        background: var(--dark);
+        padding: 60px 0 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 80px;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+
+    .footer-logo img {
+        height: 70px;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 2px 10px rgba(76, 201, 240, 0.3));
+    }
+
+    .footer-about p {
+        color: var(--gray-light);
+        line-height: 1.8;
+        margin-bottom: 25px;
+        font-size: 1rem;
+    }
+
+    .footer-social {
+        display: flex;
+        gap: 15px;
+    }
+
+    .footer-social a {
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        transition: var(--transition);
+    }
+
+    .footer-social a:hover {
+        background: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .footer h3 {
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+        color: var(--light);
+        position: relative;
+        padding-bottom: 12px;
+    }
+
+    .footer h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--primary));
+        border-radius: 2px;
+    }
+
+    .footer-links ul {
+        list-style: none;
+    }
+
+    .footer-links li {
+        margin-bottom: 15px;
+    }
+
+    .footer-links a {
+        color: var(--gray-light);
+        transition: var(--transition);
+        display: inline-block;
+        font-size: 1rem;
+    }
+
+    .footer-links a:hover {
+        color: var(--accent);
+        transform: translateX(-8px);
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--gray);
+        font-size: 14px;
+    }
+
+    /* ===== MODAL ===== */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: var(--dark-light);
+        border-radius: var(--radius);
+        max-width: 700px;
+        width: 90%;
+        position: relative;
+        animation: modalSlide 0.4s ease;
+        overflow: hidden;
+    }
+
+    @keyframes modalSlide {
+        from { 
+            opacity: 0;
+            transform: translateY(-30px) scale(0.95);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--danger), #ff6b9d);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: white;
+        z-index: 2;
+        transition: var(--transition);
+        box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
+    }
+
+    .modal-close:hover {
+        transform: rotate(90deg) scale(1.1);
+    }
+
+    .modal-image {
+        padding: 50px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 350px;
+    }
+
+    .modal-image img {
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+    }
+
+    /* ===== NOTIFICATIONS ===== */
+    .notification {
+        position: fixed;
+        top: 140px;
+        right: 20px;
+        background: linear-gradient(135deg, var(--success), #2ecc71);
+        color: white;
+        padding: 18px 28px;
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 2001;
+        box-shadow: var(--shadow-lg);
+        animation: slideInRight 0.4s ease, slideOutRight 0.4s ease 2.6s;
+        max-width: 380px;
+        backdrop-filter: blur(10px);
+    }
+
+    .notification.error {
+        background: linear-gradient(135deg, var(--danger), #ff6b9d);
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    .notification i {
+        font-size: 22px;
+    }
+
+    /* ===== BACK TO TOP ===== */
+    .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: white;
+        box-shadow: 0 10px 25px rgba(67, 97, 238, 0.3);
+        z-index: 999;
+        transition: var(--transition);
+    }
+
+    .back-to-top.show {
+        display: flex;
+    }
+
+    .back-to-top:hover {
+        transform: translateY(-5px) scale(1.1);
+        box-shadow: 0 15px 35px rgba(67, 97, 238, 0.4);
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 1200px) {
+        .container {
+            max-width: 1000px;
+            padding: 0 30px;
+        }
+        
+        .nav-link {
+            font-size: 15px;
+            padding: 9px 16px;
+        }
+        
+        .logo img {
+            height: 65px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .container {
+            max-width: 800px;
+            padding: 0 25px;
+        }
+        
+        .nav {
+            gap: 15px;
+        }
+        
+        .nav-link {
+            font-size: 14px;
+            padding: 8px 14px;
+        }
+        
+        .logo img {
+            height: 60px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding-top: 120px;
+        }
+        
+        .discount-bar {
+            font-size: 14px;
+            padding: 10px 0;
+        }
+        
+        .header {
+            padding: 12px 0;
+            top: 40px;
+        }
+        
+        .header-content {
+            height: 56px;
+        }
+        
+        /* إخفاء هيدر الكمبيوتر */
+        .header-desktop {
+            display: none;
+        }
+        
+        /* إظهار هيدر الجوال */
+        .header-mobile {
+            display: flex;
+            width: 100%;
+        }
+        
+        /* تنسيق الهيدر للجوال */
+        .header-mobile-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .header-left-mobile,
+        .header-right-mobile {
+            flex: 0 0 auto;
+        }
+
+        .header-center-mobile {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-mobile img {
+    height: 70px !important;
+    max-height: 75px !important;
+    width: auto !important;
+}
+        .logo-mobile img {
+            height: 50px;
+            max-width: 100%;
+        }
+        
+        /* الجانب الأيسر: السلة + زر القائمة */
+        .header-left-mobile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            order: 1;
+        }
+        
+        /* الجانب الأيمن: اللوجو */
+        .header-right-mobile {
+            display: flex;
+            align-items: center;
+            order: 3;
+        }
+        
+        /* المنتصف: فارغ لكنه يحافظ على الترتيب */
+        .header-center-mobile {
+            order: 2;
+            flex: 1;
+            min-width: 40px;
+        }
+        
+        /* إظهار زر القائمة على الجوال */
+        .menu-toggle {
+            display: flex;
+            margin: 0;
+        }
+        
+        /* إخفاء الروابط على الجوال */
+        .nav {
+            display: none;
+        }
+        
+        /* تعديل السلة للجوال */
+        .cart-icon.mobile {
+            margin: 0;
+        }
+        
+        .mobile-menu {
+            width: 280px;
+            padding: 90px 25px 25px;
+        }
+        
+        .notification {
+            top: 120px;
+            right: 10px;
+            left: 10px;
+            max-width: calc(100% - 20px);
+        }
+        
+        .back-to-top {
+            bottom: 25px;
+            left: 25px;
+            width: 45px;
+            height: 45px;
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .container {
+            padding: 0 20px;
+        }
+        
+        .discount-bar {
+            font-size: 12px;
+            padding: 8px 0;
+        }
+        
+        .header {
+            padding: 10px 0;
+            top: 36px;
+        }
+        
+        .header-mobile-content {
+            padding: 0 10px;
+        }
+        
+        .header-left-mobile {
+            gap: 10px;
+        }
+        
+        .logo-mobile img {
+            height: 45px;
+        }
+        
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+        
+        .cart-icon.mobile {
+            width: 38px;
+            height: 38px;
+        }
+        
+        .mobile-menu {
+            width: 100%;
+            right: -100%;
+        }
+        
+        .menu-close {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            top: 20px;
+            left: 20px;
+        }
+        
+        .modal-image {
+            padding: 30px;
+            min-height: 300px;
+        }
+        
+        .notification {
+            padding: 15px 20px;
+            max-width: 90%;
+            right: 5%;
+            top: 110px;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .discount-bar {
+            font-size: 11px;
+        }
+        
+        .mobile-menu {
+            padding: 80px 20px 20px;
+        }
+    }
+
+    /* ===== المحتوى الأصلي للملف الثاني ===== */
+    main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px 16px 60px;
+    }
+
+    .section {
+        margin-bottom: 54px;
+    }
+
+    .section-divider {
+        width: 90%;
+        height: 2px;
+        margin: 36px auto 0;
+        background: linear-gradient(to right, transparent, var(--main-color), transparent);
+        border-radius: 999px;
+        opacity: 0.6;
+    }
+
+    /* =================== كروت عامة =================== */
+    .card {
+        background: var(--card);
+        border-radius: 18px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+        overflow: hidden;
+        transition: 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.13);
+    }
+
+    /* =================== القسم 1: كيف تقدّم لك هويتك الذكية =================== */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 22px;
+        align-items: stretch;
+    }
+
+    .media-wrapper {
+        position: relative;
+        background: #000;
+    }
+
+    .media-wrapper img,
+    .media-wrapper video {
+        width: 100%;
+        height: 370px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .media-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background:#076933;
+        color: #ffffff;
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 999px;
+    }
+
+    .card-body {
+        padding: 14px 16px 18px;
+        text-align: center;
+    }
+
+    .card-body p {
+        margin: 0;
+        font-size: 14px;
+        color: #4b5563;
+        line-height: 1.7;
+    }
+
+    /* =================== القسم 2: كيف يعمل كارتك الذكي =================== */
+    .how-card {
+        max-width: 820px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .how-card video {
+        width: 100%;
+        height: 420px;
+        border-radius: 14px;
+        object-fit: cover;
+    }
+
+    .how-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 14px;
+        margin-top: 4px;
+    }
+
+    .how-step {
+        background: #f9fafb;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 14px;
+        color: #4b5563;
+        text-align: right;
+    }
+
+    .how-step span {
+        display: inline-block;
+        min-width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        background: var(--main-color);
+        color: #00121e;
+        font-size: 13px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 6px;
+    }
+
+    /* =================== القسم 3: صور واقعية للبطاقات (سلايدر) =================== */
+    .slider-wrapper {
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .mobile-slider {
+        display: flex;
+        gap: 18px;
+        overflow-x: auto;
+        padding: 8px 4px 6px;
+        scroll-behavior: smooth;
+    }
+
+    .mobile-slider::-webkit-scrollbar {
+        height: 8px;
+    }
+    .mobile-slider::-webkit-scrollbar-thumb {
+        background: rgba(15, 23, 42, 0.12);
+        border-radius: 999px;
+    }
+
+    .slider-item {
+        min-width: 260px;
+        max-width: 280px;
+        flex: 0 0 auto;
+    }
+
+    .slider-item .media-wrapper img {
+        cursor: zoom-in;
+    }
+
+    .slide-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 20px;
+        z-index: 10;
+        background: #0dca9b;
+        color: #ffffff;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.16);
+    }
+    .slide-btn.prev { left: -4px; }
+    .slide-btn.next { right: -4px; }
+
+    @media (max-width: 899px) {
+        .slide-btn { display: flex; }
+    }
+    @media (min-width: 900px) {
+        .mobile-slider {
+            overflow: visible;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 22px;
+        }
+        .slider-item { min-width: 0; max-width: 100%; }
+        .slide-btn { display: none; }
+    }
+
+    /* =================== Lightbox =================== */
+    #lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(8px);
+        align-items: center;
+        justify-content: center;
+        z-index: 3000;
+        padding: 28px;
+    }
+    #lightbox img {
+        max-width: 96%;
+        max-height: 96%;
+        border-radius: 16px;
+        box-shadow: 0 16px 40px rgba(0,0,0,0.8);
+    }
+    #closeLightbox {
+        position: absolute;
+        top: 20px;
+        left: 24px;
+        font-size: 34px;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    /* =================== تأثيرات احترافية =================== */
+    .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: 0.8s ease;
+    }
+    .reveal.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .media-wrapper img,
+    .media-wrapper video {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover .media-wrapper img,
+    .card:hover .media-wrapper video {
+        transform: scale(1.03);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.4);
+    }
+
+    /* =================== الفوتر القديم =================== */
+    .main-footer {
+        text-align: center;
+        padding: 22px 10px 26px;
+        background: #ffffff;
+        border-top: 1px solid #e5e7eb;
+        font-size: 14px;
+        color: #6b7280;
+        display: none; /* سنخفي الفوتر القديم */
+    }
+
+    /* =================== ريسبونسيف =================== */
+    @media (max-width: 640px) {
+        body { padding-top: 70px; }
+        .media-wrapper img,
+        .media-wrapper video { height: 330px; }
+        .how-card video { height: 350px; }
+    }
+
+    /* تنسيق القسم الثالث الجديد */
+    /* تنسيق القسم الثالث - عرض أعرض وصورة كاملة */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        justify-items: center;
+    }
+
+    .cards-grid .card {
+        width: 100%;
+        max-width: 380px;
+        text-align: center;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+        transition: 0.3s ease;
+    }
+
+    .cards-grid .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.13);
+    }
+
+    .cards-grid .media-wrapper.wide {
+        width: 100%;
+        height: 260px;
+        overflow: hidden;
+        border-radius: 18px 18px 0 0;
+    }
+
+    .cards-grid .media-wrapper.wide img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: #f5f5f5;
+        cursor: zoom-in;
+        transition: transform 0.3s ease;
+    }
+
+    .cards-grid .media-wrapper.wide img:hover {
+        transform: scale(1.05);
+    }
+
+    .cards-grid .card-body {
+        padding: 14px 12px;
+        font-size: 15px;
+        color: #4b5563;
+    }
+
+    /* زر الطلب */
+    .order-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 24px;
+        background: var(--main-color);
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 15px;
+        border-radius: 999px;
+        transition: 0.3s ease;
+        text-decoration: none;
+    }
+
+    .order-btn:hover {
+        background: #00c095;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 224, 172, 0.4);
+    }
+
+    .how-card {
+        position: relative; /* ← أضيفي هذا السطر */
+    }
+
+    .media-bad {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #076933;
+        color: #ffffff;
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 999px;
+        z-index: 2; /* ← مهم ليبقى فوق الفيديو */
+    }
+
+    .toggle-media-btn {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 3;
+        transition: 0.3s;
+    }
+
+    .toggle-media-btn:hover {
+        background: var(--main-color);
+    }
+    
+    /* ===== زر إضافة للسلة ===== */
+    .add-to-cart-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 15px;
+        border-radius: 999px;
+        transition: var(--transition);
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .add-to-cart-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+    }
+    
+    .add-to-cart-btn i {
+        margin-left: 8px;
+    }
+    
+    .add-to-cart-btn.added {
+        background: linear-gradient(135deg, var(--success), #2ecc71);
+    }
+    
+    .card-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 15px;
+    }
+    
+    @media (max-width: 576px) {
+        .add-to-cart-btn {
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+    }
+  </style>
+</head>
+
+<body>
+
+    <!-- شريط الخصم -->
+  <div class="discount-bar" id="discountBar">
+    🎉 خصم 20% + توصيل مجاني لمصر (الكود: <span>DIFEG10</span>) | خصم 50% للسعودية (الكود: <span>DIFSA10</span>) 🎉
+</div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <!-- الهيدر للكمبيوتر -->
+            <div class="header-desktop">
+                <div class="header-content">
+                    <!-- المجموعة اليسرى: اللوجو (للكمبيوتر) -->
+                    <div class="header-left-desktop">
+                        <div class="logo">
+                            <img src="logo-removebg-preview.png" alt="مُـخـتـلـف | هويتك الذكية">
+                        </div>
+                    </div>
+
+                    <!-- المنتصف: الروابط (للكمبيوتر) -->
+                    <div class="header-center">
+                        <nav class="nav">
+                            <a href="features.html" class="nav-link">المميزات</a>
+                            <a href="shr7.html" class="nav-link active">العرض الواقعي</a>
+                            <a href="about.html" class="nav-link">عن مُـخـتـلـف</a>
+                            <a href="faq.html" class="nav-link">الأسئلة الشائعة</a>
+                        </nav>
+                    </div>
+
+                    <!-- المجموعة اليمنى: السلة (للكمبيوتر) -->
+                    <div class="header-right-desktop">
+                        <a href="cart.html" class="cart-icon desktop">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الهيدر للجوال -->
+            <div class="header-mobile">
+                <div class="header-mobile-content">
+                    <!-- الجانب الأيسر: زر القائمة -->
+                    <div class="header-left-mobile">
+                        <button class="menu-toggle" id="menuToggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- المنتصف: اللوجو -->
+                    <div class="header-center-mobile">
+                        <div class="logo-mobile">
+                            <img src="logo-removebg-preview.png" alt="مُـخـتـلـف | هويتك الذكية">
+                        </div>
+                    </div>
+                    
+                    <!-- الجانب الأيمن: السلة -->
+                    <div class="header-right-mobile">
+                        <a href="cart.html" class="cart-icon mobile">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCountMobile">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="menu-close" id="menuClose">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="mobile-menu-header">
+            <img src="logo-removebg-preview.png" alt="مُـخـتـلـف">
+            <h3>مُـخـتـلـف | هويتك الذكية</h3>
+        </div>
+
+        <nav class="mobile-nav">
+            <a href="index.html" class="mobile-nav-link">
+                <i class="fas fa-home"></i>
+                <span>الرئيسية</span>
+            </a>
+            <a href="about.html" class="mobile-nav-link">
+                <i class="fas fa-info-circle"></i>
+                <span>عن مُـخـتـلـف</span>
+            </a>
+            <a href="shr7.html" class="mobile-nav-link active">
+                <i class="fas fa-play-circle"></i>
+                <span>العرض الواقعي</span>
+            </a>
+            <a href="features.html" class="mobile-nav-link">
+                <i class="fas fa-star"></i>
+                <span>المميزات</span>
+            </a>
+            <a href="faq.html" class="mobile-nav-link">
+                <i class="fas fa-question-circle"></i>
+                <span>الأسئلة الشائعة</span>
+            </a>
+            <a href="cart.html" class="mobile-nav-link">
+                <i class="fas fa-shopping-cart"></i>
+                <span>السلة <span id="mobileCartCount">(0)</span></span>
+            </a>
+        </nav>
+
+        <div class="mobile-social">
+            <h4>تابعنا على</h4>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/share/17SvsYFmAu/" target="_blank">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com/a_different1" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@a_different_?_r=1&_t=ZS-91JP97UzArn" target="_blank">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://wa.me/message/364PZMOXC2UWA1" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- ============ المحتوى الرئيسي ============ -->
+  <main>
+
+    <!-- ===== القسم 1: كيف تقدّم لك هويتك الذكية ===== -->
+    <section class="section reveal">
+      <div class="section-title" data-aos="fade-up">
+        <h2>كيف تُقدّم لك هويتك الذكية؟</h2>
+        <p>اكتشف جمال وتفاصيل بطاقاتنا الذكية</p>
+      </div>
+
+      <div class="products-grid">
+        <!-- فيديو تشويقي للمنتج -->
+        <article class="card">
+          <div class="media-wrapper">
+            <!-- غيّر مسار الفيديو -->
+            <video controls poster="">
+              <source src="vid1.mp4" type="video/mp4">
+              متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <span class="media-badge">  عرض تشويقي احترافي</span>
+          </div>
+          <div class="card-body">
+            <p>  عرض تشويقي احترافي يعرض المنتج بجودة عالية ويبرز تفاصيله بدقة، مع تصوير احترافي يوضح جماله الحقيقي من كل زاوية .</p>
+          </div>
+        </article>
+
+        <!-- فيديو تقديم للمنتج -->
+        <article class="card">
+          <div class="media-wrapper">
+            <!-- غيّر مسار الفيديو -->
+            <video controls poster="منتج ازرق.webp">
+              <source src="vid1.mp4" type="video/mp4">
+              متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <span class="media-badge">عرض كيف يقدم لك المنتج</span>
+          </div>
+          <div class="card-body">
+            <p> شاهد كيف بيوصل لك طلبك بطريقة احترافية — تغليف منسّق ، جودة عالية، وتجربة استلام تليق بك .</p>
+          </div>
+        </article>
+
+        <!-- صورة منتج 2 -->
+        <article class="card">
+          <div class="media-wrapper">
+            <img src="منتج اسود.png" alt="بطاقة مختلفة - أسود" class="zoom-img">
+            <span class="media-badge">    صورة تشويقية تجمع طلبك بكامل تفاصيله</span>
+          </div>
+          <div class="card-body">
+            <p> صورة تجمع المنتج كامل بتفاصيله — البوكس والكارت والموبايل شغّال عليهم الخدمة ، علشان تشوف شكل المنتج الحقيقي وطريقة عرضه بشكل أنيق وواضح .</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="section-divider"></div>
+    </section>
+
+    <!-- ===== القسم 2: كيف يعمل كارتك الذكي؟ ===== -->
+    <section class="section reveal">
+      <div class="section-title" data-aos="fade-up">
+        <h2>كيف يعمل كارتك الذكي؟</h2>
+        <p>اكتشف بساطة واستخدامات البطاقات الذكية</p>
+      </div>
+
+      <article class="card how-card">
+            <span class="media-bad">عرض واقعي لـــ عمل الكارت     </span>
+
+        <!-- غيّر مسار الفيديو التعليمي -->
+        <video controls poster="">
+          
+          <source src="vid1.mp4" type="video/mp4">
+
+          متصفحك لا يدعم تشغيل الفيديو.
+        </video>
+
+        <div class="how-steps">
+          <div class="how-step">
+            <span>1</span>
+            قرّب الكارت من الجوال – يدعم أغلب الأجهزة الحديثة التي تدعم NFC أو من خلال QR.
+          </div>
+          <div class="how-step">
+            <span>2</span>
+            تظهر صفحتك الذكية فورًا: بياناتك، حسابات التواصل، موقعك، وأي روابط مهمة.
+          </div>
+          
+          <div class="how-step">
+            <span>3</span>
+            تقدر تعدّل معلوماتك في أي وقت ، والكارت يظل نفسه – فقط راسلنا للتعديل وفــ أسرع وقت يتحدث بدون اي مشاكل .
+          </div>
+           <div class="how-step">
+            <span>4</span>
+راقب عدد زوار صفحتك من خلال العين ف الأسفل 👀            </div>
+        </div>
+      </article>
+
+      <div class="section-divider"></div>
+    </section>
+
+    <!-- ===== القسم 3: صور واقعية للبطاقات ===== -->
+<section class="section reveal">
+  <div class="section-title" data-aos="fade-up">
+    <h2>صور و فديو واقعي للبطاقات</h2>
+    <p>لقطات حقيقية من بطاقات مختلفة بألوان متعددة تناسب الأفراد، الشركات، والمكاتب</p>
+  </div>
+
+  <div class="cards-grid">
+<!-- بطاقة 1 – بمبي -->
+<article class="card">
+  <div class="media-wrapper wide">
+    <img src="منتج بمبي.webp" alt="بطاقة بمبي" class="zoom-img card-img">
+    <video class="card-video" style="display:none;" controls>
+      <source src="vid1.mp4" type="video/mp4">
+    </video>
+    <button class="toggle-media-btn" onclick="toggleMedia(this)">
+      <i class="fa-solid fa-circle-play"></i>
+    </button>
+  </div>
+  <div class="card-body">
+    <p>البمبي يبعث طاقة لطيفة تفيض بالمرح والدفء.</p>
+    <div class="card-actions">
+      <button class="add-to-cart-btn" data-id="2" data-name="Different | Pink Card" data-price="49" data-image="منتج بمبي.webp">
+        <i class="fas fa-cart-plus"></i> أضف للسلة
+      </button>
+    </div>
+  </div>
+</article>
+
+<!-- بطاقة 2 – بيرجندي -->
+<article class="card">
+  <div class="media-wrapper wide">
+    <img src="منتج بيرجندي.webp" alt="بطاقة بيرجندي" class="zoom-img card-img">
+    <video class="card-video" style="display:none;" controls>
+      <source src="vid1.mp4" type="video/mp4">
+    </video>
+    <button class="toggle-media-btn" onclick="toggleMedia(this)">
+      <i class="fa-solid fa-circle-play"></i>
+    </button>
+  </div>
+  <div class="card-body">
+    <p>البيرجندي يعكس عمقًا هادئًا بنغمة فاخرة تلفت الانتباه.</p>
+    <div class="card-actions">
+      <button class="add-to-cart-btn" data-id="5" data-name="Different | Burgundy Card" data-price="49" data-image="منتج بيرجندي.webp">
+        <i class="fas fa-cart-plus"></i> أضف للسلة
+      </button>
+    </div>
+  </div>
+</article>
+
+<!-- بطاقة 3 – أزرق -->
+<article class="card">
+  <div class="media-wrapper wide">
+    <img src="منتج ازرق.webp" alt="بطاقة أزرق" class="zoom-img card-img">
+    <video class="card-video" style="display:none;" controls>
+      <source src="vid1.mp4" type="video/mp4">
+    </video>
+    <button class="toggle-media-btn" onclick="toggleMedia(this)">
+      <i class="fa-solid fa-circle-play"></i>
+    </button>
+  </div>
+  <div class="card-body">
+    <p>الأزرق يرمز إلى صفاء واضح يمنح إحساسًا بالنقاء والراحة.</p>
+    <div class="card-actions">
+      <button class="add-to-cart-btn" data-id="3" data-name="Different | Blue Card" data-price="49" data-image="منتج ازرق.webp">
+        <i class="fas fa-cart-plus"></i> أضف للسلة
+      </button>
+    </div>
+  </div>
+</article>
+
+<!-- بطاقة 4 – أبيض -->
+<article class="card">
+  <div class="media-wrapper wide">
+    <img src="منتج ابيض.webp" alt="بطاقة أبيض" class="zoom-img card-img">
+    <video class="card-video" style="display:none;" controls>
+      <source src="vid1.mp4" type="video/mp4">
+    </video>
+    <button class="toggle-media-btn" onclick="toggleMedia(this)">
+      <i class="fa-solid fa-circle-play"></i>
+    </button>
+  </div>
+  <div class="card-body">
+    <p>الأبيض يمنح إحساسًا بالنقاء والبساطة في كل لحظة.</p>
+    <div class="card-actions">
+      <button class="add-to-cart-btn" data-id="4" data-name="Different | White Card" data-price="49" data-image="منتج ابيض.webp">
+        <i class="fas fa-cart-plus"></i> أضف للسلة
+      </button>
+    </div>
+  </div>
+</article>
+
+<!-- بطاقة 5 – أسود -->
+<article class="card">
+  <div class="media-wrapper wide">
+    <img src="منتج اسود.webp" alt="بطاقة أسود" class="zoom-img card-img">
+    <video class="card-video" style="display:none;" controls>
+      <source src="vid1.mp4" type="video/mp4">
+    </video>
+    <button class="toggle-media-btn" onclick="toggleMedia(this)">
+      <i class="fa-solid fa-circle-play"></i>
+    </button>
+  </div>
+  <div class="card-body">
+    <p>الأسود يقدّم حضورًا قويًا يترك انطباعًا ثابتًا وواثقًا.</p>
+    <div class="card-actions">
+      <button class="add-to-cart-btn" data-id="1" data-name="Different | Black Card" data-price="49" data-image="منتج اسود.webp">
+        <i class="fas fa-cart-plus"></i> أضف للسلة
+      </button>
+    </div>
+  </div>
+</article>
+
+<!-- بطاقة 6 – للمؤسسات -->
+<article class="card">
+  <div class="media-wrapper wide">
+    <img src="org.jpeg" alt="بطاقات للمؤسسات" class="zoom-img card-img">
+    
+  </div>
+  <div class="card-body">
+    <p>تصميم موحد للمؤسسات، يعكس هوية مهنية متكاملة.</p>
+    <div class="card-actions">
+      <button class="add-to-cart-btn" data-id="6" data-name="بطاقات خاصة للمؤسسات" data-price="59" data-image="org.jpeg">
+        <i class="fas fa-cart-plus"></i> أضف للسلة
+      </button>
+    </div>
+  </div>
+</article>
+  </div>
+</section>
+  </main>
+
+  <!-- ============ Lightbox لتكبير الصور ============ -->
+  <div id="lightbox" aria-hidden="true">
+    <span id="closeLightbox" aria-label="إغلاق">×</span>
+    <img id="lightboxImg" src="" alt="عرض الصورة">
+  </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <img src="logo-removebg-preview.png" alt="مُـخـتـلـف" class="footer-logo" loading="lazy">
+                    <p>
+                        كارت مُـخـتـلـف هو بطاقتك الذكية العصرية اللي تجمع كل معلوماتك في مكان واحد.
+                        طريقة أسرع، احترافية، وتخليك دايمًا مميز قدّام الناس.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/a_different1" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@a_different_" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/966547856086" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="features.html">المميزات</a></li>
+                        <li><a href="shr7.html">العرض الواقعي</a></li>
+                        <li><a href="about.html">عن مُـخـتـلـف</a></li>
+                        <li><a href="faq.html">الأسئلة الشائعة</a></li>
+                        <li><a href="cart.html">سلة التسوق</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h3>تواصل معنا</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> المملكة العربية السعودية</li>
+                        <li><i class="fas fa-map-marker-alt"></i> جمهورية مصر العربية</li>
+                       <li><i class="fas fa-phone"></i> <span dir="ltr">+966 54 785 6086</span></li>
+                        <li><i class="fas fa-envelope"></i> storedifferent22@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>جميع الحقوق محفوظة © 2025 | مُـخـتـلـف | هويتك الذكية</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Modal for Product Images -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <div class="modal-image">
+                <img id="modalImage" src="" alt="عرض المنتج">
+            </div>
+        </div>
+    </div>
+
+  <!-- ============ JavaScript ============ -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        disable: 'mobile'
+    });
+
+    // DOM Elements من الملف الأول
+    const menuToggle = document.getElementById('menuToggle');
+    const menuClose = document.getElementById('menuClose');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const backToTop = document.getElementById('backToTop');
+    const header = document.getElementById('header');
+    const discountBar = document.getElementById('discountBar');
+    const cartCount = document.getElementById('cartCount');
+    const cartCountMobile = document.getElementById('cartCountMobile');
+    const mobileCartCount = document.getElementById('mobileCartCount');
+
+    // Cart Management من الملف الأول
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function updateCartCount() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        
+        // تحديث السلة للكمبيوتر
+        cartCount.textContent = totalItems;
+        cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+        
+        // تحديث السلة للجوال
+        if (cartCountMobile) {
+            cartCountMobile.textContent = totalItems;
+            cartCountMobile.style.display = totalItems > 0 ? 'flex' : 'none';
+        }
+        
+        // تحديث السلة في القائمة الجانبية
+        if (mobileCartCount) {
+            mobileCartCount.textContent = `(${totalItems})`;
+        }
+    }
+
+    // وظيفة إضافة المنتج للسلة
+    function addToCart(product) {
+        const existingItem = cart.find(item => item.id === product.id);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            product.quantity = 1;
+            cart.push(product);
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        showNotification('تم إضافة المنتج إلى السلة بنجاح!');
+        
+        return true;
+    }
+
+    // Mobile Menu Functions من الملف الأول
+    function openMobileMenu() {
+        mobileMenu.classList.add('active');
+        menuOverlay.classList.add('active');
+        discountBar.classList.add('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+        mobileMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        discountBar.classList.remove('hidden');
+        document.body.style.overflow = '';
+    }
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', openMobileMenu);
+    }
+    
+    if (menuClose) {
+        menuClose.addEventListener('click', closeMobileMenu);
+    }
+    
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', closeMobileMenu);
+    }
+
+    // Close mobile menu when clicking on links
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Back to Top من الملف الأول
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTop.classList.add('show');
+        } else {
+            backToTop.classList.remove('show');
+        }
+
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    if (backToTop) {
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Notification System من الملف الأول
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 3000);
+    }
+
+    // Smooth scrolling for anchor links من الملف الأول
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                const headerHeight = header.offsetHeight;
+                const targetPosition = targetElement.offsetTop - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Initialize cart count on load من الملف الأول
+    updateCartCount();
+
+    // Optimize performance من الملف الأول
+    document.addEventListener('DOMContentLoaded', () => {
+        // Lazy load images
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src || img.src;
+                    img.classList.add('loaded');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        images.forEach(img => {
+            if (!img.complete) {
+                imageObserver.observe(img);
+            }
+        });
+
+        // Set current year in footer
+        const yearElement = document.querySelector('.footer-bottom p');
+        if (yearElement) {
+            yearElement.textContent = yearElement.textContent.replace('2025', new Date().getFullYear());
+        }
+        
+        // إضافة أحداث أزرار إضافة للسلة
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const product = {
+                    id: this.dataset.id,
+                    name: this.dataset.name,
+                    price: this.dataset.price,
+                    image: this.dataset.image
+                };
+                
+                const added = addToCart(product);
+                
+                if (added) {
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> تمت الإضافة';
+                    this.classList.add('added');
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.classList.remove('added');
+                        this.disabled = false;
+                    }, 2000);
+                }
+            });
+        });
+    });
+
+    // Handle resize events من الملف الأول
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            AOS.refresh();
+            if (window.innerWidth > 768 && mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        }, 250);
+    });
+
+    // JavaScript الأصلي من الملف الثاني
+    // القائمة الجانبية القديمة
+    const menuBtn = document.getElementById('menuBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const sideMenu = document.getElementById('sideMenu');
+    const navLinks = document.querySelectorAll('.side-menu nav a');
+
+    if (menuBtn && sideMenu) {
+        menuBtn.addEventListener('click', () => {
+            sideMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sideMenu.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sideMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+    }
+
+    // سلايدر صور البطاقات
+    const videoSlider = document.getElementById("videoSlider");
+    const vPrev = document.getElementById("videoPrev");
+    const vNext = document.getElementById("videoNext");
+
+    function scrollByWidth(slider, dir) {
+      if (!slider) return;
+      const card = slider.querySelector(".slider-item");
+      if (!card) return;
+      const step = card.getBoundingClientRect().width + 18;
+      slider.scrollBy({ left: dir * step, behavior: "smooth" });
+    }
+
+    if (vNext) vNext.addEventListener("click", () => scrollByWidth(videoSlider, +1));
+    if (vPrev) vPrev.addEventListener("click", () => scrollByWidth(videoSlider, -1));
+
+    // Lightbox
+    const zoomImgs = document.querySelectorAll(".zoom-img");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const closeLightbox = document.getElementById("closeLightbox");
+
+    zoomImgs.forEach(img => {
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        lightbox.style.display = "flex";
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    if (closeLightbox) {
+        closeLightbox.addEventListener("click", () => {
+            lightbox.style.display = "none";
+            lightbox.setAttribute("aria-hidden", "true");
+        });
+    }
+
+    if (lightbox) {
+        lightbox.addEventListener("click", (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = "none";
+                lightbox.setAttribute("aria-hidden", "true");
+            }
+        });
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (lightbox && lightbox.style.display === "flex") {
+          lightbox.style.display = "none";
+          lightbox.setAttribute("aria-hidden", "true");
+        }
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+          closeMobileMenu();
+        }
+      }
+    });
+
+    // reveal animation
+    const revealEls = document.querySelectorAll('.reveal');
+
+    function handleReveal() {
+      const trigger = window.innerHeight - 100;
+      revealEls.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < trigger) {
+          el.classList.add('show');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', handleReveal);
+    window.addEventListener('load', handleReveal);
+
+    // وظيفة تبديل الصورة والفيديو
+    function toggleMedia(btn) {
+        const wrapper = btn.closest('.media-wrapper');
+        const img = wrapper.querySelector('.card-img');
+        const video = wrapper.querySelector('.card-video');
+
+        if (img.style.display === 'none') {
+            // أوقف الفيديو وإرجع للصورة
+            video.pause();
+            img.style.display = 'block';
+            video.style.display = 'none';
+            btn.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
+        } else {
+            // أخفي الصورة وشغل الفيديو
+            img.style.display = 'none';
+            video.style.display = 'block';
+            video.play();
+            btn.innerHTML = '<i class="fa-solid fa-circle-stop"></i>';
+        }
+    }
+  </script>
+</body>
+</html>
