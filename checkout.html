@@ -772,6 +772,17 @@
             }
         }
 
+        /* Order Summary Loading State */
+        .order-summary.loading .summary-row,
+        .order-summary.loading .item-total,
+        .order-summary.loading .item-details p {
+            opacity: 0.3;
+        }
+
+        .order-summary.loading .final-total {
+            display: none;
+        }
+
         /* Responsive */
         @media (max-width: 992px) {
             .checkout-container {
@@ -936,7 +947,7 @@
         <div id="step23-content" class="step-content" style="display: none;">
             <div class="checkout-container">
                 <!-- Order Summary -->
-                <div class="order-summary">
+                <div class="order-summary" id="orderSummaryContainer">
                     <h3><i class="fas fa-shopping-bag"></i> ملخص الطلب</h3>
                     
                     <div class="order-items" id="orderItems">
@@ -946,17 +957,17 @@
                     <div class="summary-totals">
                         <div class="summary-row">
                             <span>المجموع الفرعي:</span>
-                            <span id="subtotal">٠</span>
+                            <span id="subtotal">--</span>
                         </div>
                         <div class="summary-row">
                             <span>الشحن:</span>
-                            <span id="shipping">٠</span>
+                            <span id="shipping">--</span>
                         </div>
                         
                         <!-- Original Total -->
                         <div class="summary-row original-total" id="originalTotalRow" style="display: none;">
                             <span>السعر الأصلي:</span>
-                            <span id="originalTotal">٠</span>
+                            <span id="originalTotal">--</span>
                         </div>
                         
                         <!-- Discount Applied -->
@@ -968,13 +979,13 @@
                         <!-- Final Total -->
                         <div class="summary-row final-total" id="finalTotalRow">
                             <span>الإجمالي النهائي:</span>
-                            <span id="total">٠</span>
+                            <span id="total">--</span>
                         </div>
                     </div>
                     
                     <div class="shipping-note" id="shippingNote">
                         <i class="fas fa-info-circle"></i>
-                        <span id="shippingText">الشحن يحدد حسب المحافظة</span>
+                        <span id="shippingText">اختر البلد أولاً لتحديد سعر الشحن</span>
                     </div>
                     
                     <!-- Discount Success Message -->
@@ -1095,7 +1106,7 @@
                             <label for="terms">أوافق على الشروط والأحكام وسياسة الخصوصية</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" id="submitOrderBtn">
+                        <button type="submit" class="btn btn-primary" id="submitOrderBtn" disabled>
                             <i class="fas fa-check-circle"></i> تأكيد الطلب
                         </button>
                     </form>
@@ -1105,11 +1116,11 @@
     </main>
 
     <!-- Mobile Total Preview -->
-    <div class="mobile-total-preview" id="mobileTotalPreview">
+    <div class="mobile-total-preview" id="mobileTotalPreview" style="display: none;">
         <div class="mobile-total-content">
             <div>
                 <div class="mobile-total-label">الإجمالي النهائي</div>
-                <div class="mobile-total-price" id="mobileTotalPrice">٠</div>
+                <div class="mobile-total-price" id="mobileTotalPrice">--</div>
             </div>
             <div class="mobile-total-arrow">
                 <i class="fas fa-arrow-up"></i>
@@ -1445,21 +1456,46 @@
             checkIfMobile();
             window.addEventListener('resize', checkIfMobile);
             
-            // Load cart from localStorage
-            cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            // Set current year
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-            
-            // If cart is empty, redirect to cart page
-            if (cart.length === 0) {
+            // Load cart from localStorage with validation
+            try {
+                const cartData = localStorage.getItem('cart');
+                cart = cartData ? JSON.parse(cartData) : [];
+                
+                // Validate cart data
+                if (!Array.isArray(cart)) {
+                    cart = [];
+                }
+                
+                // Filter invalid items
+                cart = cart.filter(item => item && item.id && item.name && item.price);
+                
+                // If cart is empty, redirect to cart page
+                if (cart.length === 0) {
+                    window.location.href = 'cart.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل العربة:', error);
+                cart = [];
                 window.location.href = 'cart.html';
                 return;
             }
             
+            // Reset all calculation variables
+            selectedCountry = '';
+            selectedPrice = 0;
+            shippingCost = 0;
+            isDiscountApplied = false;
+            discountAmount = 0;
+            originalTotal = 0;
+            finalTotal = 0;
+            appliedDiscountCode = '';
+            
+            // Set current year
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
             // Start from step 1 - country selection
             localStorage.removeItem('selectedCountry');
-            selectedCountry = '';
             
             // Hide checkout form, show country selection
             document.getElementById('step23-content').style.display = 'none';
@@ -1479,10 +1515,20 @@
             document.getElementById('continueBtn').disabled = true;
             
             // Set default shipping note
-            document.getElementById('shippingText').textContent = 'الشحن يحدد حسب المحافظة';
+            document.getElementById('shippingText').textContent = 'اختر البلد أولاً لتحديد سعر الشحن';
             
-            // Reset discount state
-            resetDiscount();
+            // Reset all totals to --
+            document.getElementById('subtotal').textContent = '--';
+            document.getElementById('shipping').textContent = '--';
+            document.getElementById('total').textContent = '--';
+            document.getElementById('mobileTotalPrice').textContent = '--';
+            
+            // Hide discount and original total rows
+            document.getElementById('originalTotalRow').style.display = 'none';
+            document.getElementById('discountRow').style.display = 'none';
+            
+            // Add loading class to order summary
+            document.getElementById('orderSummaryContainer').classList.add('loading');
         });
 
         // ===================== DISCOUNT CODE HANDLING =====================
@@ -1502,6 +1548,11 @@
 
         // Apply Discount
         function applyDiscount() {
+            if (!selectedCountry || selectedPrice <= 0) {
+                alert('الرجاء اختيار البلد أولاً');
+                return;
+            }
+            
             const discountCode = document.getElementById('discountCode').value.trim().toUpperCase();
             
             if (!discountCode) {
@@ -1582,6 +1633,42 @@
             
             // Save selection
             localStorage.setItem('selectedCountry', country);
+            
+            // Show temporary prices as 0
+            const orderItems = document.getElementById('orderItems');
+            let html = '';
+            
+            cart.forEach(item => {
+                html += `
+                    <div class="order-item">
+                        <div class="item-image">
+                            <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60'">
+                        </div>
+                        <div class="item-details">
+                            <h5>${item.name}</h5>
+                            <p>٠ ${getCurrency()} × ${item.quantity}</p>
+                        </div>
+                        <div class="item-total">
+                            ٠ ${getCurrency()}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            orderItems.innerHTML = html;
+            
+            // Show prices as 0 temporarily
+            document.getElementById('subtotal').textContent = `٠ ${getCurrency()}`;
+            document.getElementById('shipping').textContent = `٠ ${getCurrency()}`;
+            document.getElementById('total').textContent = `٠ ${getCurrency()}`;
+            document.getElementById('mobileTotalPrice').textContent = `٠ ${getCurrency()}`;
+            
+            // Hide discount and original total
+            document.getElementById('originalTotalRow').style.display = 'none';
+            document.getElementById('discountRow').style.display = 'none';
+            
+            // Update shipping note
+            document.getElementById('shippingText').textContent = `سيتم تحديث سعر الشحن بعد اختيار المحافظة`;
         }
 
         // Continue to Step 2
@@ -1597,6 +1684,9 @@
             
             // Update step 3 to active
             document.getElementById('step3').classList.add('active');
+            
+            // Remove loading class
+            document.getElementById('orderSummaryContainer').classList.remove('loading');
             
             // Initialize checkout form
             initializeCheckoutForm();
@@ -1635,6 +1725,9 @@
             
             // Update mobile total preview
             updateMobileTotalPreview();
+            
+            // Enable/Disable submit button based on total
+            document.getElementById('submitOrderBtn').disabled = finalTotal <= 0;
         }
 
         // Load Governorates
@@ -1659,10 +1752,16 @@
 
         // Update cart prices based on selected country
         function updateCartPrices() {
+            if (!selectedCountry || selectedPrice <= 0) {
+                console.log('لا يمكن تحديث الأسعار: البلد أو السعر غير محدد');
+                return;
+            }
+            
             cart.forEach(item => {
                 item.price = selectedPrice;
             });
             localStorage.setItem('cart', JSON.stringify(cart));
+            console.log('تم تحديث أسعار المنتجات إلى:', selectedPrice, getCurrency());
         }
 
         // Load Order Summary
@@ -1789,6 +1888,9 @@
             
             // Update mobile total preview
             updateMobileTotalPreview();
+            
+            // Enable/Disable submit button based on total
+            document.getElementById('submitOrderBtn').disabled = finalTotal <= 0;
         }
 
         // Show Mobile Discount Notification
@@ -1832,11 +1934,16 @@
         // Update Mobile Total Preview
         function updateMobileTotalPreview() {
             const mobileTotalPrice = document.getElementById('mobileTotalPrice');
-            mobileTotalPrice.textContent = document.getElementById('total').textContent;
             
-            // Update currency in mobile preview
-            const currency = getCurrency();
-            mobileTotalPrice.textContent = `${finalTotal} ${currency}`;
+            if (finalTotal <= 0) {
+                mobileTotalPrice.textContent = '--';
+                document.getElementById('mobileTotalPreview').style.display = 'none';
+            } else {
+                // Update currency in mobile preview
+                const currency = getCurrency();
+                mobileTotalPrice.textContent = `${finalTotal} ${currency}`;
+                document.getElementById('mobileTotalPreview').style.display = 'block';
+            }
         }
 
         // Calculate Shipping Cost
@@ -1859,8 +1966,13 @@
         function updateShippingNote(governorate) {
             const shippingText = document.getElementById('shippingText');
             
+            if (!selectedCountry || selectedPrice <= 0) {
+                shippingText.textContent = 'اختر البلد أولاً لتحديد سعر الشحن';
+                return;
+            }
+            
             if (!governorate) {
-                shippingText.textContent = 'الشحن يحدد حسب المحافظة';
+                shippingText.textContent = `اختر المحافظة لتحديد سعر الشحن`;
                 return;
             }
             
@@ -1880,6 +1992,9 @@
 
         // Get Currency Symbol
         function getCurrency() {
+            if (!selectedCountry) {
+                return '--';
+            }
             return selectedCountry === 'السعودية' ? 'ر.س' : 'ج.م';
         }
 
