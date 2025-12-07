@@ -2,8 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <title>الأسئلة الشائعة | مُـخـتـلـف 💎</title>
+  
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   
   <!-- AOS للأنيميشنات -->
@@ -48,7 +50,7 @@
       line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
-      padding-top: 130px;
+      padding-top: 40px; /* تم تقليل المسافة لتصبح فقط ارتفاع شريط الخصم */
     }
 
     a {
@@ -87,34 +89,38 @@
     }
 
     /* ===== شريط الخصم ===== */
-   .discount-bar {
-          position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(135deg, var(--danger), #ff6b9d);
-            color: white;
-            padding: 12px 0;
-            z-index: 1100;
-            text-align: center;
-            font-weight: 700;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
-            animation: pulseDiscount 2s infinite;
-            transition: var(--transition);
+    .discount-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(135deg, var(--danger), #ff6b9d);
+      color: white;
+      padding: 12px 0;
+      z-index: 1100;
+      text-align: center;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
+      animation: pulseDiscount 2s infinite;
+      transition: var(--transition);
+      height: 40px; /* ارتفاع ثابت للشريط */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .discount-bar.hidden {
-        transform: translateY(-100%);
-        opacity: 0;
+      transform: translateY(-100%);
+      opacity: 0;
     }
 
     .discount-bar span {
-        background: #1b175e;
-        padding: 4px 12px;
-        border-radius: 20px;
-        margin: 0 8px;
-        font-weight: 800;
+      background: #1b175e;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin: 0 8px;
+      font-weight: 800;
     }
 
     @keyframes pulseDiscount {
@@ -125,7 +131,7 @@
     /* ===== IMPROVED HEADER ===== */
     .header {
       position: fixed;
-      top: 40px;
+      top: 40px; /* يبدأ مباشرة بعد الشريط بدون فراغ */
       left: 0;
       width: 100%;
       background: rgba(15, 23, 42, 0.98);
@@ -134,7 +140,7 @@
       z-index: 1000;
       border-bottom: 1px solid rgba(255, 255, 255, 0.15);
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-      padding: 15px 0;
+      padding: 10px 0; /* تقليل padding لتقليل الارتفاع */
       transition: var(--transition);
     }
 
@@ -154,7 +160,6 @@
       justify-content: flex-start;
     }
 
-    /* الروابط في المنتصف (للكمبيوتر) */
     .header-center {
       display: flex;
       align-items: center;
@@ -162,7 +167,6 @@
       flex: 1;
     }
 
-    /* المجموعة اليمنى: السلة فقط (للكمبيوتر) */
     .header-right-desktop {
       display: flex;
       align-items: center;
@@ -170,14 +174,12 @@
       justify-content: flex-end;
     }
 
-    /* الروابط */
     .nav {
       display: flex;
       gap: 20px;
       align-items: center;
     }
     
-    /* سلة التسوق للكمبيوتر */
     .cart-icon.desktop {
       margin-right: 15px;
     }
@@ -193,7 +195,7 @@
     }
 
     .logo img {
-      height: 70px;
+      height: 60px; /* تصغير اللوجو قليلاً */
       width: auto;
       transition: transform 0.3s ease;
       filter: drop-shadow(0 2px 12px rgba(76, 201, 240, 0.4));
@@ -203,7 +205,6 @@
       transform: scale(1.05);
     }
 
-    /* الروابط */
     .nav-link {
       color: var(--light);
       font-weight: 600;
@@ -328,7 +329,6 @@
       right: 0;
     }
 
-    /* زر إغلاق القائمة الجانبية */
     .menu-close {
       position: absolute;
       top: 25px;
@@ -351,7 +351,6 @@
       transform: rotate(90deg) scale(1.1);
     }
 
-    /* عنوان القائمة الجانبية */
     .mobile-menu-header {
       display: flex;
       flex-direction: column;
@@ -374,7 +373,6 @@
       font-weight: 700;
     }
 
-    /* روابط القائمة الجانبية */
     .mobile-nav {
       display: flex;
       flex-direction: column;
@@ -407,7 +405,6 @@
       font-size: 18px;
     }
 
-    /* وسائل التواصل في القائمة الجانبية */
     .mobile-social {
       margin-top: auto;
       padding-top: 30px;
@@ -654,17 +651,18 @@
     /* ===== RESPONSIVE DESIGN ===== */
     @media (max-width: 768px) {
       body {
-        padding-top: 120px;
+        padding-top: 40px; /* نفس القيمة لجميع الأجهزة */
       }
       
       .discount-bar {
         font-size: 14px;
         padding: 10px 0;
+        height: 40px;
       }
       
       .header {
-        padding: 12px 0;
-        top: 40px;
+        padding: 8px 0;
+        top: 40px; /* نفس القيمة بدون تغيير */
       }
       
       .header-content {
@@ -702,17 +700,21 @@
         justify-content: center;
         align-items: center;
       }
+
       .logo-mobile img {
-    height: 70px !important;
-    max-height: 75px !important;
-    width: auto !important;
-}
-      .logo-mobile img {
-        height: 50px;
+        height: 75px !important; /* زيادة حجم اللوجو على الجوال */
         max-width: 100%;
       }
       
-      /* الجانب الأيسر: السلة + زر القائمة */
+      /* زيادة ارتفاع الهيدر لاستيعاب اللوجو الأكبر */
+      .header-content {
+        height: 70px; /* زيادة الارتفاع */
+      }
+      
+      .header {
+        padding: 12px 0; /* زيادة padding */
+      }
+      
       .header-left-mobile {
         display: flex;
         align-items: center;
@@ -720,32 +722,27 @@
         order: 1;
       }
       
-      /* الجانب الأيمن: اللوجو */
       .header-right-mobile {
         display: flex;
         align-items: center;
         order: 3;
       }
       
-      /* المنتصف: فارغ لكنه يحافظ على الترتيب */
       .header-center-mobile {
         order: 2;
         flex: 1;
         min-width: 40px;
       }
       
-      /* إظهار زر القائمة على الجوال */
       .menu-toggle {
         display: flex;
         margin: 0;
       }
       
-      /* إخفاء الروابط على الجوال */
       .nav {
         display: none;
       }
       
-      /* تعديل السلة للجوال */
       .cart-icon.mobile {
         margin: 0;
       }
@@ -786,10 +783,11 @@
       .discount-bar {
         font-size: 12px;
         padding: 8px 0;
+        height: 36px;
       }
       
       .header {
-        padding: 10px 0;
+        padding: 6px 0;
         top: 36px;
       }
       
@@ -869,9 +867,10 @@
 
 <body>
   <!-- شريط الخصم -->
- <div class="discount-bar" id="discountBar">
+  <div class="discount-bar" id="discountBar">
     🎉"  خصم استثنائي لفترة محدودة جداً  <span>DIFEG10</span>  <span>DIFSA10</span>"  🎉
-</div>
+  </div>
+
   <!-- Header -->
   <header class="header" id="header">
     <div class="container">
@@ -1093,7 +1092,7 @@
             <li><i class="fas fa-map-marker-alt"></i> المملكة العربية السعودية</li>
             <li><i class="fas fa-map-marker-alt"></i> جمهورية مصر العربية</li>
             <li><i class="fas fa-phone"></i> <span dir="ltr">+966 54 785 6086</span></li>
-                        <li><i class="fas fa-envelope"></i> storedifferent22@gmail.com</li>
+            <li><i class="fas fa-envelope"></i> storedifferent22@gmail.com</li>
           </ul>
         </div>
       </div>
@@ -1222,13 +1221,84 @@
     // Initialize cart count on load
     updateCartCount();
 
+    // تحديد العنصر النشط في القائمة الجانبية بناءً على الصفحة الحالية
+    function setActiveMobileMenuLink() {
+      const currentPage = window.location.pathname.split('/').pop() || 'faq.html';
+      
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      const links = {
+        'index.html': 'index.html',
+        'about.html': 'about.html',
+        'shr7.html': 'shr7.html',
+        'features.html': 'features.html',
+        'faq.html': 'faq.html',
+        'cart.html': 'cart.html'
+      };
+      
+      if (links[currentPage]) {
+        const activeLink = document.querySelector(`.mobile-nav-link[href="${links[currentPage]}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      }
+    }
+
+    // تحديد العنصر النشط في القائمة العلوية
+    function setActiveNavLinks() {
+      const currentPage = window.location.pathname.split('/').pop() || 'faq.html';
+      
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        
+        const linkHref = link.getAttribute('href');
+        const linkPage = linkHref.split('/').pop();
+        
+        if (linkPage === currentPage) {
+          link.classList.add('active');
+        }
+      });
+    }
+
     // Optimize performance
     document.addEventListener('DOMContentLoaded', () => {
+      // Lazy load images
+      const images = document.querySelectorAll('img[loading="lazy"]');
+      const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src || img.src;
+            img.classList.add('loaded');
+            imageObserver.unobserve(img);
+          }
+        });
+      });
+
+      images.forEach(img => {
+        if (!img.complete) {
+          imageObserver.observe(img);
+        }
+      });
+
       // Set current year in footer
       const yearElement = document.querySelector('.footer-bottom p');
       if (yearElement) {
         yearElement.textContent = yearElement.textContent.replace('2025', new Date().getFullYear());
       }
+      
+      // تحديد العناصر النشطة
+      setActiveMobileMenuLink();
+      setActiveNavLinks();
+    });
+
+    // تحديث عند فتح القائمة الجانبية
+    menuToggle.addEventListener('click', () => {
+      setTimeout(() => {
+        setActiveMobileMenuLink();
+      }, 100);
     });
 
     // Handle resize events
@@ -1244,5 +1314,4 @@
     });
   </script>
 </body>
-
 </html>
