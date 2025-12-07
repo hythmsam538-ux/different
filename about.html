@@ -59,7 +59,7 @@
         line-height: 1.6;
         min-height: 100vh;
         overflow-x: hidden;
-        padding-top: 130px; /* زيادة المساحة بسبب شريط الخصم */
+        padding-top: 40px; /* تم تقليل المسافة لتصبح فقط ارتفاع شريط الخصم */
     }
 
     a {
@@ -113,6 +113,10 @@
         box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
         animation: pulseDiscount 2s infinite;
         transition: var(--transition);
+        height: 40px; /* ارتفاع ثابت للشريط */
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .discount-bar.hidden {
@@ -136,7 +140,7 @@
     /* ===== IMPROVED HEADER ===== */
     .header {
         position: fixed;
-        top: 40px; /* تعديل لأن شريط الخصم يأخذ 40px */
+        top: 40px; /* يبدأ مباشرة بعد الشريط بدون فراغ */
         left: 0;
         width: 100%;
         background: rgba(15, 23, 42, 0.98);
@@ -145,7 +149,7 @@
         z-index: 1000;
         border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        padding: 15px 0;
+        padding: 10px 0; /* تقليل padding لتقليل الارتفاع */
         transition: var(--transition);
     }
 
@@ -158,7 +162,6 @@
     }
 
     /* ===== تنسيق الهيدر للكمبيوتر ===== */
-    /* المجموعة اليسرى: اللوجو فقط (للكمبيوتر) */
     .header-left-desktop {
         display: flex;
         align-items: center;
@@ -166,7 +169,6 @@
         justify-content: flex-start;
     }
 
-    /* الروابط في المنتصف (للكمبيوتر) */
     .header-center {
         display: flex;
         align-items: center;
@@ -174,7 +176,6 @@
         flex: 1;
     }
 
-    /* المجموعة اليمنى: السلة فقط (للكمبيوتر) */
     .header-right-desktop {
         display: flex;
         align-items: center;
@@ -182,14 +183,12 @@
         justify-content: flex-end;
     }
 
-    /* الروابط */
     .nav {
         display: flex;
         gap: 20px;
         align-items: center;
     }
     
-    /* سلة التسوق للكمبيوتر */
     .cart-icon.desktop {
         margin-right: 15px;
     }
@@ -205,7 +204,7 @@
     }
 
     .logo img {
-        height: 70px;
+        height: 60px; /* تصغير اللوجو قليلاً */
         width: auto;
         transition: transform 0.3s ease;
         filter: drop-shadow(0 2px 12px rgba(76, 201, 240, 0.4));
@@ -215,7 +214,6 @@
         transform: scale(1.05);
     }
 
-    /* الروابط */
     .nav-link {
         color: var(--light);
         font-weight: 600;
@@ -319,167 +317,163 @@
         box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
     }
 
-      /* ===== IMPROVED MOBILE MENU ===== */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 320px;
-            height: 100vh;
-            background: var(--dark);
-            z-index: 1101;
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            padding: 100px 30px 30px;
-            overflow-y: auto;
-        }
+    /* ===== IMPROVED MOBILE MENU ===== */
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 320px;
+        height: 100vh;
+        background: var(--dark);
+        z-index: 1101;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        padding: 100px 30px 30px;
+        overflow-y: auto;
+    }
 
-        .mobile-menu.active {
-            right: 0;
-        }
+    .mobile-menu.active {
+        right: 0;
+    }
 
-        /* زر إغلاق القائمة الجانبية */
-        .menu-close {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--danger), #ff6b9d);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: white;
-            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
-            transition: var(--transition);
-            z-index: 1002;
-        }
+    .menu-close {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--danger), #ff6b9d);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: white;
+        box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
+        transition: var(--transition);
+        z-index: 1002;
+    }
 
-        .menu-close:hover {
-            transform: rotate(90deg) scale(1.1);
-        }
+    .menu-close:hover {
+        transform: rotate(90deg) scale(1.1);
+    }
 
-        /* عنوان القائمة الجانبية */
-        .mobile-menu-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
+    .mobile-menu-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
 
-        .mobile-menu-header img {
-            height: 80px;
-            filter: drop-shadow(0 2px 10px rgba(76, 201, 240, 0.4));
-        }
+    .mobile-menu-header img {
+        height: 80px;
+        filter: drop-shadow(0 2px 10px rgba(76, 201, 240, 0.4));
+    }
 
-        .mobile-menu-header h3 {
-            font-size: 20px;
-            color: var(--accent);
-            font-weight: 700;
-        }
+    .mobile-menu-header h3 {
+        font-size: 20px;
+        color: var(--accent);
+        font-weight: 700;
+    }
 
-        /* روابط القائمة الجانبية */
-        .mobile-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+    .mobile-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
 
-        .mobile-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition);
-            font-size: 16px;
-        }
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 16px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: var(--transition);
+        font-size: 16px;
+    }
 
-        .mobile-nav-link:hover,
-        .mobile-nav-link.active {
-            background: rgba(76, 201, 240, 0.1);
-            border-color: var(--accent);
-            transform: translateX(-8px);
-        }
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+        background: rgba(76, 201, 240, 0.1);
+        border-color: var(--accent);
+        transform: translateX(-8px);
+    }
 
-        .mobile-nav-link i {
-            width: 20px;
-            text-align: center;
-            color: var(--accent);
-            font-size: 18px;
-        }
+    .mobile-nav-link i {
+        width: 20px;
+        text-align: center;
+        color: var(--accent);
+        font-size: 18px;
+    }
 
-        /* وسائل التواصل في القائمة الجانبية */
-        .mobile-social {
-            margin-top: auto;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .mobile-social {
+        margin-top: auto;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        .mobile-social h4 {
-            margin-bottom: 20px;
-            color: var(--light);
-            font-size: 16px;
-            text-align: center;
-        }
+    .mobile-social h4 {
+        margin-bottom: 20px;
+        color: var(--light);
+        font-size: 16px;
+        text-align: center;
+    }
 
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
 
-        .social-icons a {
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: var(--transition);
-        }
+    .social-icons a {
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        transition: var(--transition);
+    }
 
-        .social-icons a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-        }
+    .social-icons a:hover {
+        background: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
 
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 1100;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+        z-index: 1100;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
 
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+    .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
 
     /* ===== المحتوى ===== */
     .about-content {
         max-width: 850px;
-        margin: 0 auto 50px;
+        margin: 80px auto 50px;
         background: rgba(255, 255, 255, 0.05);
         color: var(--light);
         border-radius: var(--radius);
@@ -652,29 +646,6 @@
         font-size: 14px;
     }
 
-    /* ===== زر الواتساب ===== */
-    .whatsapp-btn {
-        position: fixed;
-        bottom: 30px;
-        left: 30px;
-        background: #23396d;
-        color: white;
-        border-radius: 50px;
-        padding: 14px 28px;
-        text-decoration: none;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
-        transition: var(--transition);
-        z-index: 999;
-    }
-    .whatsapp-btn:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
-    }
-
     /* ===== Back to Top ===== */
     .back-to-top {
         position: fixed;
@@ -703,20 +674,88 @@
         box-shadow: 0 15px 35px rgba(67, 97, 238, 0.4);
     }
 
+    /* ===== زر الواتساب ===== */
+    .whatsapp-btn {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        background: #23396d;
+        color: white;
+        border-radius: 50px;
+        padding: 14px 28px;
+        text-decoration: none;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+        transition: var(--transition);
+        z-index: 999;
+    }
+    .whatsapp-btn:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+    }
+
     /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 1200px) {
+        .container {
+            max-width: 1000px;
+            padding: 0 30px;
+        }
+        
+        .nav-link {
+            font-size: 15px;
+            padding: 9px 16px;
+        }
+        
+        .logo img {
+            height: 55px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .container {
+            max-width: 800px;
+            padding: 0 25px;
+        }
+        
+        .nav {
+            gap: 15px;
+        }
+        
+        .nav-link {
+            font-size: 14px;
+            padding: 8px 14px;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .about-content {
+            padding: 35px 30px;
+        }
+        
+        .about-content h2 {
+            font-size: 32px;
+        }
+    }
+
     @media (max-width: 768px) {
         body {
-            padding-top: 120px;
+            padding-top: 40px; /* نفس القيمة لجميع الأجهزة */
         }
         
         .discount-bar {
             font-size: 14px;
             padding: 10px 0;
+            height: 40px;
         }
         
         .header {
-            padding: 12px 0;
-            top: 40px;
+            padding: 8px 0;
+            top: 40px; /* نفس القيمة بدون تغيير */
         }
         
         .header-content {
@@ -754,14 +793,12 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .logo-mobile img {
-            height: 70px !important;
-            max-height: 75px !important;
-            width: auto !important;
+            height: 75px !important; /* زيادة حجم اللوجو على الجوال */
+            max-width: 100%;
         }
         
-        /* الجانب الأيسر: السلة + زر القائمة */
         .header-left-mobile {
             display: flex;
             align-items: center;
@@ -769,44 +806,38 @@
             order: 1;
         }
         
-        /* الجانب الأيمن: اللوجو */
         .header-right-mobile {
             display: flex;
             align-items: center;
             order: 3;
         }
         
-        /* المنتصف: فارغ لكنه يحافظ على الترتيب */
         .header-center-mobile {
             order: 2;
             flex: 1;
             min-width: 40px;
         }
         
-        /* إظهار زر القائمة على الجوال */
         .menu-toggle {
             display: flex;
             margin: 0;
         }
         
-        /* إخفاء الروابط على الجوال */
         .nav {
             display: none;
         }
         
-        /* تعديل السلة للجوال */
         .cart-icon.mobile {
             margin: 0;
         }
         
-        /* تعديل اللوجو للجوال */
         .logo-mobile img {
             height: 50px;
         }
         
         .about-content {
-            margin: 20px 15px 50px;
-            padding: 25px 15px;
+            margin: 40px 15px 50px;
+            padding: 25px 20px;
         }
 
         .about-content h2 {
@@ -831,11 +862,58 @@
             height: 45px;
             font-size: 18px;
         }
+        
+        .mobile-menu {
+            width: 280px;
+            padding: 90px 25px 25px;
+        }
+        
+        .points li {
+            font-size: 16px;
+        }
     }
 
     @media (max-width: 576px) {
+        .container {
+            padding: 0 20px;
+        }
+        
+        .discount-bar {
+            font-size: 12px;
+            padding: 8px 0;
+            height: 36px;
+        }
+        
+        .header {
+            padding: 6px 0;
+            top: 36px;
+        }
+        
+        .header-mobile-content {
+            padding: 0 10px;
+        }
+        
+        .header-left-mobile {
+            gap: 10px;
+        }
+        
+        .logo-mobile img {
+            height: 45px;
+        }
+        
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+        
+        .cart-icon.mobile {
+            width: 38px;
+            height: 38px;
+        }
+        
         .about-content {
-            margin: 10px 10px 40px;
+            margin: 30px 10px 40px;
             padding: 20px 15px;
         }
 
@@ -844,7 +922,8 @@
         }
 
         .points li {
-            font-size: 16px;
+            font-size: 15px;
+            padding-right: 25px;
         }
         
         .whatsapp-btn {
@@ -865,6 +944,46 @@
         .discount-bar {
             font-size: 11px;
         }
+        
+        .mobile-menu {
+            width: 100%;
+            right: -100%;
+        }
+        
+        .menu-close {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            top: 20px;
+            left: 20px;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .about-content h2 {
+            font-size: 22px;
+        }
+        
+        .about-text {
+            font-size: 15px;
+        }
+        
+        .points li {
+            font-size: 14px;
+        }
+        
+        .whatsapp-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .discount-bar {
+            font-size: 10px;
+        }
+        
+        .mobile-menu {
+            padding: 80px 20px 20px;
+        }
     }
   </style>
 </head>
@@ -873,7 +992,7 @@
   <!-- شريط الخصم -->
   <div class="discount-bar" id="discountBar">
     🎉"  خصم استثنائي لفترة محدودة جداً  <span>DIFEG10</span>  <span>DIFSA10</span>"  🎉
-</div>
+  </div>
 
   <!-- Header -->
   <header class="header" id="header">
@@ -1245,5 +1364,3 @@
   </script>
 </body>
 </html>
-
-
