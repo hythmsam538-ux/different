@@ -237,7 +237,23 @@
             display: flex;
             align-items: center;
         }
-
+@media (max-width: 768px) {
+    /* هنا زيادة حجم اللوجو على الجوال */
+    .logo-mobile img {
+        height: 75px !important; /* كان 50px - زدنا 15px */
+        max-width: 100%;
+    }
+    
+    /* زيادة ارتفاع الهيدر لاستيعاب اللوجو الأكبر */
+    .header-content {
+        height: 70px; /* كان 56px - زدنا 14px */
+    }
+    
+    .header {
+        padding: 12px 0; /* كان 8px - زدنا 4px */
+        top: 40px;
+    }
+}
         .logo img {
             height: 60px; /* تصغير اللوجو قليلاً */
             width: auto;
