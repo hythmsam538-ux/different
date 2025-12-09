@@ -264,6 +264,31 @@
             color: #86efac;
         }
 
+        /* Quantity Discount Message */
+        .quantity-discount-message {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: var(--radius);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .quantity-discount-message.show {
+            display: block;
+        }
+
+        .quantity-discount-message i {
+            color: #a855f7;
+            margin-left: 5px;
+        }
+
+        .quantity-discount-message span {
+            font-size: 0.9rem;
+            color: #c084fc;
+        }
+
         /* Checkout Form */
         .checkout-form {
             background: rgba(255, 255, 255, 0.05);
@@ -362,6 +387,41 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
+        }
+
+        /* Autocomplete for governorates */
+        .autocomplete-container {
+            position: relative;
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            left: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            background: var(--dark-light);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius);
+            z-index: 1000;
+            margin-top: 5px;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .autocomplete-list.show {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .autocomplete-item:hover {
+            background: rgba(76, 201, 240, 0.2);
         }
 
         /* Payment Methods */
@@ -956,12 +1016,18 @@
                     
                     <div class="summary-totals">
                         <div class="summary-row">
-                            <span>المجموع الفرعي:</span>
+                            <span>مجموع المنتجات:</span>
                             <span id="subtotal">--</span>
                         </div>
                         <div class="summary-row">
                             <span>الشحن:</span>
                             <span id="shipping">--</span>
+                        </div>
+                        
+                        <!-- Quantity Discount -->
+                        <div class="summary-row discount" id="quantityDiscountRow" style="display: none;">
+                            <span id="quantityDiscountText"></span>
+                            <span id="quantityDiscountAmount"></span>
                         </div>
                         
                         <!-- Original Total -->
@@ -986,6 +1052,12 @@
                     <div class="shipping-note" id="shippingNote">
                         <i class="fas fa-info-circle"></i>
                         <span id="shippingText">اختر البلد أولاً لتحديد سعر الشحن</span>
+                    </div>
+                    
+                    <!-- Quantity Discount Message -->
+                    <div class="quantity-discount-message" id="quantityDiscountMessage">
+                        <i class="fas fa-star"></i>
+                        <span id="quantityDiscountMessageText"></span>
                     </div>
                     
                     <!-- Discount Success Message -->
@@ -1043,11 +1115,11 @@
                             </div>
                             
                             <div class="city-container">
-                                <div class="form-group">
-                                    <label for="governorate">المحافظة *</label>
-                                    <select id="governorate" required>
-                                        <option value="">اختر المحافظة أولاً</option>
-                                    </select>
+                                <div class="form-group autocomplete-container">
+                                    <label for="governorateInput">المحافظة *</label>
+                                    <input type="text" id="governorateInput" required placeholder="ابحث أو اختر المحافظة" autocomplete="off">
+                                    <div class="autocomplete-list" id="governorateList"></div>
+                                    <input type="hidden" id="governorate" name="governorate">
                                 </div>
                                 
                                 <div class="form-group">
@@ -1058,7 +1130,7 @@
                             
                             <div class="form-group">
                                 <label for="address">العنوان التفصيلي *</label>
-                                <textarea id="address" rows="3" required placeholder="الحي - الشارع - رقم المبنى - الشقة"></textarea>
+                                <textarea id="address" rows="3" required placeholder="المنطقة بالتحديد - الحي - الشارع - رقم المبنى - الشقة"></textarea>
                             </div>
                         </div>
 
@@ -1088,7 +1160,6 @@
                             <h3 class="section-title">
                                 <i class="fas fa-credit-card"></i> طريقة الدفع
                             </h3>
-                            
                             <div class="payment-methods" id="paymentMethods">
                                 <!-- Payment methods will be loaded based on country -->
                             </div>
@@ -1188,7 +1259,9 @@
         let selectedPrice = 0;
         let shippingCost = 0;
         let isDiscountApplied = false;
+        let isQuantityDiscountApplied = false;
         let discountAmount = 0;
+        let quantityDiscountAmount = 0;
         let originalTotal = 0;
         let finalTotal = 0;
         let appliedDiscountCode = '';
@@ -1222,128 +1295,24 @@
             ]
         };
         
-        // Governorates Data
+        // Quantity Discount Rules - MODIFIED: فقط 5 منتجات فأكثر بخصم 40%
+        const quantityDiscountRules = {
+            5: { discountPercent: 40, freeShipping: true, description: 'خصم 40% + توصيل مجاني (لـ5 منتجات فأكثر)' }
+        };
+        
+        // Governorates Data بناءً على الصورة
         const governorates = {
             'السعودية': [
-                "الرياض",
-                "جدة",
-                "مكة المكرمة",
-                "المدينة المنورة",
-                "الدمام",
-                "الخبر",
-                "الطائف",
-                "تبوك",
-                "أبها",
-                "حائل",
-                "الباحة",
-                "الجوف",
-                "نجران",
-                "عرعر",
-                "سكاكا",
-                "القريات",
-                "الخرج",
-                "الهفوف",
-                "المجمعة",
-                "القويعية",
-                "وادي الدواسر",
-                "بيشة",
-                "النماص",
-                "محايل عسير",
-                "ظهران الجنوب",
-                "طريف",
-                "ضباء",
-                "الليث",
-                "القنفذة",
-                "الوجه",
-                "حقل",
-                "بدر",
-                "مهد الذهب",
-                "الرس",
-                "الدوادمي",
-                "المزاحمية",
-                "ضرما",
-                "حوطة بني تميم",
-                "الأفلاج",
-                "الغاط",
-                "حوطة سدير",
-                "الزلفي",
-                "شقراء",
-                "الدلم",
-                "السليل",
-                "الخفجي",
-                "رابغ",
-                "ثول",
-                "العلا",
-                "البدائع",
-                "رأس تنورة",
-                "تيماء",
-                "أملج",
-                "الجبيل",
-                "ينبع",
-                "العقيق",
-                "الجموم",
-                "خليص",
-                "الكامل",
-                "رنية",
-                "تربة",
-                "الخفجي",
-                "النعيرية",
-                "القرين",
-                "الصويرة",
-                "الحريق",
-                "مرات",
-                "ثادق",
-                "الحائط",
-                "بقيق",
-                "الطرف",
-                "القطيف",
-                "عنك",
-                "صفوى",
-                "تاروت",
-                "السنبلة",
-                "العمارية",
-                "العارض",
-                "المردمة",
-                "الخوبة",
-                "العارض",
-                "المجمعة",
-                "السفانية",
-                "القوز",
-                "أخرى"
+                "الرياض", "جدة", "مكة", "المدينة المنورة", "الدمام", "الخبر", "الطائف", 
+                "تبوك", "أبها", "حائل", "الباحة", "الجوف", "نجران", "عرعر", "سكاكا", 
+                "بريدة", "عنيزة", "حفر الباطن", "الخفجي", "القطيف", "الهفوف", "المجمعة"
             ],
             'مصر': [
-                "القاهرة",
-                "الجيزة",
-                "الإسكندرية",
-                "الدقهلية",
-                "البحر الأحمر",
-                "البحيرة",
-                "الفيوم",
-                "الغربية",
-                "الإسماعيلية",
-                "المنوفية",
-                "المنيا",
-                "القليوبية",
-                "الوادي الجديد",
-                "السويس",
-                "أسوان",
-                "أسيوط",
-                "بني سويف",
-                "بورسعيد",
-                "دمياط",
-                "سوهاج",
-                "جنوب سيناء",
-                "كفر الشيخ",
-                "مطروح",
-                "الأقصر",
-                "قنا",
-                "شمال سيناء",
-                "الشرقية",
-                "الغربية",
-                "كفر الشيخ",
-                "الفيوم",
-                "أسوان",
-                "أخرى"
+                "القاهرة", "الجيزة", "الإسكندرية", "الدقهلية", "البحر الأحمر", "البحيرة", 
+                "الفيوم", "الغربية", "الإسماعيلية", "المنوفية", "المنيا", "القليوبية", 
+                "الوادي الجديد", "السويس", "أسوان", "أسيوط", "بني سويف", "بورسعيد", 
+                "دمياط", "سوهاج", "جنوب سيناء", "كفر الشيخ", "مطروح", "الأقصر", 
+                "قنا", "شمال سيناء", "الشرقية"
             ]
         };
 
@@ -1369,7 +1338,7 @@
                     name: 'الدفع عند الاستلام',
                     icon: 'fas fa-money-bill-wave',
                     description: 'ادفع عند استلام المنتج',
-                    alert: 'ستقوم بدفع المبلغ عند استلام الطلب في العنوان المحدد'
+                    alert: '    يرجى العلم ان الدفع عند الأستلام ستقوم بالدفع بـ نصف المبلغ وهذا لأن الطلب يصمم خصيصا لك وبأسمك وبياناتك وباقي المبلغ بعد استلام الطلب   '
                 }
             ],
             'مصر': [
@@ -1392,61 +1361,67 @@
                     name: 'الدفع عند الاستلام',
                     icon: 'fas fa-money-bill-wave',
                     description: 'ادفع عند استلام المنتج',
-                    alert: 'ستقوم بدفع المبلغ عند استلام الطلب في العنوان المحدد'
+                    alert: '   يرجى العلم ان الدفع عند الأستلام ستقوم بالدفع بـ نصف المبلغ وهذا لأن الطلب يصمم خصيصا لك وبأسمك وبياناتك وباقي المبلغ بعد استلام الطلب    '
                 }
             ]
         };
 
-        // Shipping Costs
+        // Shipping Costs بناءً على الصورة
         const shippingPrices = {
             'السعودية': {
-                'الرياض': 15,
-                'جدة': 20,
-                'مكة المكرمة': 20,
+                'الرياض': 25,
+                'جدة': 25,
+                'مكة': 25,
                 'المدينة المنورة': 25,
                 'الدمام': 25,
                 'الخبر': 25,
-                'الطائف': 30,
-                'تبوك': 35,
-                'أبها': 35,
-                'حائل': 40,
-                'الباحة': 40,
-                'الجوف': 45,
-                'نجران': 45,
-                'عرعر': 50,
-                'سكاكا': 50,
-                'default': 30
+                'الطائف': 25,
+                'تبوك': 25,
+                'أبها': 25,
+                'حائل': 25,
+                'الباحة': 25,
+                'الجوف': 25,
+                'نجران': 25,
+                'عرعر': 25,
+                'سكاكا': 25,
+                'بريدة': 25,
+                'عنيزة': 25,
+                'حفر الباطن': 10,
+                'الخفجي': 25,
+                'القطيف': 25,
+                'الهفوف': 25,
+                'المجمعة': 25,
+                'default': 25
             },
             'مصر': {
-                'القاهرة': 30,
-                'الجيزة': 30,
-                'الإسكندرية': 40,
-                'الدقهلية': 50,
+                'القاهرة': 55,
+                'الجيزة': 55,
+                'الإسكندرية': 80,
+                'الدقهلية': 70,
                 'البحر الأحمر': 80,
-                'البحيرة': 45,
-                'الفيوم': 60,
-                'الغربية': 40,
+                'البحيرة': 80,
+                'الفيوم': 55,
+                'الغربية': 70,
                 'الإسماعيلية': 70,
-                'المنوفية': 40,
-                'المنيا': 65,
-                'القليوبية': 35,
-                'الوادي الجديد': 120,
-                'السويس': 75,
-                'أسوان': 100,
-                'أسيوط': 80,
-                'بني سويف': 70,
-                'بورسعيد': 85,
-                'دمياط': 60,
-                'سوهاج': 90,
-                'جنوب سيناء': 130,
-                'كفر الشيخ': 50,
-                'مطروح': 110,
-                'الأقصر': 95,
-                'قنا': 85,
-                'شمال سيناء': 125,
-                'الشرقية': 45,
-                'أخرى': 70,
-                'default': 60
+                'المنوفية': 70,
+                'المنيا': 50,
+                'القليوبية': 55,
+                'الوادي الجديد': 95,
+                'السويس': 70,
+                'أسوان': 95,
+                'أسيوط': 55,
+                'بني سويف': 55,
+                'بورسعيد': 80,
+                'دمياط': 80,
+                'سوهاج': 55,
+                'جنوب سيناء': 95,
+                'كفر الشيخ': 80,
+                'مطروح': 95,
+                'الأقصر': 80,
+                'قنا': 70,
+                'شمال سيناء': 85,
+                'الشرقية': 70,
+                'default': 70
             }
         };
 
@@ -1486,7 +1461,9 @@
             selectedPrice = 0;
             shippingCost = 0;
             isDiscountApplied = false;
+            isQuantityDiscountApplied = false;
             discountAmount = 0;
+            quantityDiscountAmount = 0;
             originalTotal = 0;
             finalTotal = 0;
             appliedDiscountCode = '';
@@ -1526,6 +1503,7 @@
             // Hide discount and original total rows
             document.getElementById('originalTotalRow').style.display = 'none';
             document.getElementById('discountRow').style.display = 'none';
+            document.getElementById('quantityDiscountRow').style.display = 'none';
             
             // Add loading class to order summary
             document.getElementById('orderSummaryContainer').classList.add('loading');
@@ -1567,6 +1545,7 @@
             
             if (validDiscount) {
                 isDiscountApplied = true;
+                isQuantityDiscountApplied = false; // Cancel quantity discount
                 appliedDiscountCode = discountCode;
                 
                 // Update UI
@@ -1598,7 +1577,9 @@
         // Reset Discount
         function resetDiscount() {
             isDiscountApplied = false;
+            isQuantityDiscountApplied = false;
             discountAmount = 0;
+            quantityDiscountAmount = 0;
             appliedDiscountCode = '';
             
             // Reset UI
@@ -1666,6 +1647,7 @@
             // Hide discount and original total
             document.getElementById('originalTotalRow').style.display = 'none';
             document.getElementById('discountRow').style.display = 'none';
+            document.getElementById('quantityDiscountRow').style.display = 'none';
             
             // Update shipping note
             document.getElementById('shippingText').textContent = `سيتم تحديث سعر الشحن بعد اختيار المحافظة`;
@@ -1699,8 +1681,8 @@
             countrySelect.value = selectedCountry;
             countrySelect.disabled = true;
             
-            // Load governorates for selected country
-            loadGovernorates();
+            // Initialize autocomplete for governorates
+            initGovernorateAutocomplete();
             
             // Update prices in cart
             updateCartPrices();
@@ -1730,24 +1712,138 @@
             document.getElementById('submitOrderBtn').disabled = finalTotal <= 0;
         }
 
-        // Load Governorates
-        function loadGovernorates() {
-            const governorateSelect = document.getElementById('governorate');
-            governorateSelect.innerHTML = '<option value="">اختر المحافظة</option>';
+        // Initialize Governorates Autocomplete
+        function initGovernorateAutocomplete() {
+            const input = document.getElementById('governorateInput');
+            const list = document.getElementById('governorateList');
+            const hiddenInput = document.getElementById('governorate');
             
-            const countryGovernorates = governorates[selectedCountry] || [];
+            // Populate autocomplete list
+            function populateAutocomplete(searchTerm = '') {
+                const countryGovernorates = governorates[selectedCountry] || [];
+                let filteredGovernorates = countryGovernorates;
+                
+                if (searchTerm) {
+                    filteredGovernorates = countryGovernorates.filter(gov => 
+                        gov.includes(searchTerm)
+                    );
+                }
+                
+                // Sort by search term
+                filteredGovernorates.sort((a, b) => {
+                    const aStartsWith = a.startsWith(searchTerm);
+                    const bStartsWith = b.startsWith(searchTerm);
+                    if (aStartsWith && !bStartsWith) return -1;
+                    if (!aStartsWith && bStartsWith) return 1;
+                    return a.localeCompare(b);
+                });
+                
+                list.innerHTML = '';
+                
+                if (filteredGovernorates.length === 0) {
+                    const item = document.createElement('div');
+                    item.className = 'autocomplete-item';
+                    item.textContent = 'لا توجد نتائج';
+                    item.style.color = 'var(--gray-light)';
+                    item.style.cursor = 'default';
+                    list.appendChild(item);
+                } else {
+                    filteredGovernorates.forEach(gov => {
+                        const item = document.createElement('div');
+                        item.className = 'autocomplete-item';
+                        item.textContent = gov;
+                        item.addEventListener('click', function() {
+                            input.value = gov;
+                            hiddenInput.value = gov;
+                            list.classList.remove('show');
+                            
+                            // Update shipping and apply quantity discount
+                            updateShipping();
+                            applyQuantityDiscount();
+                        });
+                        list.appendChild(item);
+                    });
+                }
+            }
             
-            countryGovernorates.forEach(gov => {
-                const option = document.createElement('option');
-                option.value = gov;
-                option.textContent = gov;
-                governorateSelect.appendChild(option);
-            });
-            
-            // Add change listener
-            governorateSelect.addEventListener('change', function() {
+            // Input event listener
+            input.addEventListener('input', function() {
+                const value = this.value.trim();
+                hiddenInput.value = value;
+                
+                if (value) {
+                    populateAutocomplete(value);
+                    list.classList.add('show');
+                } else {
+                    list.classList.remove('show');
+                    hiddenInput.value = '';
+                }
+                
+                // Update shipping when typing
                 updateShipping();
+                applyQuantityDiscount();
             });
+            
+            // Focus event listener
+            input.addEventListener('focus', function() {
+                if (this.value.trim()) {
+                    populateAutocomplete(this.value.trim());
+                    list.classList.add('show');
+                } else {
+                    populateAutocomplete();
+                    list.classList.add('show');
+                }
+            });
+            
+            // Click outside to close
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.autocomplete-container')) {
+                    list.classList.remove('show');
+                }
+            });
+            
+            // Keyboard navigation
+            input.addEventListener('keydown', function(event) {
+                const items = list.querySelectorAll('.autocomplete-item');
+                let currentIndex = -1;
+                
+                items.forEach((item, index) => {
+                    if (item.style.backgroundColor) {
+                        currentIndex = index;
+                    }
+                });
+                
+                if (event.key === 'ArrowDown') {
+                    event.preventDefault();
+                    if (currentIndex < items.length - 1) {
+                        items.forEach(item => item.style.backgroundColor = '');
+                        items[currentIndex + 1].style.backgroundColor = 'rgba(76, 201, 240, 0.2)';
+                        items[currentIndex + 1].scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (event.key === 'ArrowUp') {
+                    event.preventDefault();
+                    if (currentIndex > 0) {
+                        items.forEach(item => item.style.backgroundColor = '');
+                        items[currentIndex - 1].style.backgroundColor = 'rgba(76, 201, 240, 0.2)';
+                        items[currentIndex - 1].scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (event.key === 'Enter') {
+                    event.preventDefault();
+                    const selectedItem = list.querySelector('.autocomplete-item[style*="background-color"]');
+                    if (selectedItem && selectedItem.textContent !== 'لا توجد نتائج') {
+                        input.value = selectedItem.textContent;
+                        hiddenInput.value = selectedItem.textContent;
+                        list.classList.remove('show');
+                        
+                        // Update shipping and apply quantity discount
+                        updateShipping();
+                        applyQuantityDiscount();
+                    }
+                }
+            });
+            
+            // Initialize with empty list
+            populateAutocomplete();
         }
 
         // Update cart prices based on selected country
@@ -1796,7 +1892,39 @@
             updateTotals(subtotal);
         }
 
-        // Update Totals
+        // Apply Quantity Discount Based on Item Count - MODIFIED
+        function applyQuantityDiscount() {
+            if (!selectedCountry || isDiscountApplied) {
+                return; // Don't apply if discount code is used
+            }
+            
+            // Calculate total quantity
+            const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            // Find applicable rule - فقط 5 منتجات فأكثر
+            let applicableRule = null;
+            if (totalQuantity >= 5) {
+                applicableRule = quantityDiscountRules[5];
+            }
+            
+            if (applicableRule) {
+                isQuantityDiscountApplied = true;
+                
+                // Show quantity discount message
+                const message = document.getElementById('quantityDiscountMessageText');
+                message.textContent = `🎉 مبروك! ${applicableRule.description}`;
+                document.getElementById('quantityDiscountMessage').classList.add('show');
+                
+                // Recalculate totals
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                updateTotals(subtotal);
+            } else {
+                isQuantityDiscountApplied = false;
+                document.getElementById('quantityDiscountMessage').classList.remove('show');
+            }
+        }
+
+        // Update Totals with "تم توفير" message
         function updateTotals(subtotal) {
             document.getElementById('subtotal').textContent = `${subtotal} ${getCurrency()}`;
             
@@ -1804,13 +1932,36 @@
             const governorate = document.getElementById('governorate').value;
             shippingCost = calculateShippingCost(governorate);
             
-            // Apply free shipping if discount code provides it
+            // Apply free shipping based on discount or quantity discount
             let effectiveShippingCost = shippingCost;
-            if (isDiscountApplied && appliedDiscountCode && 
-                discountCodes[selectedCountry]) {
+            let discountDescription = '';
+            let discountValue = 0;
+            
+            if (isDiscountApplied && appliedDiscountCode && discountCodes[selectedCountry]) {
                 const discountInfo = discountCodes[selectedCountry].find(d => d.code === appliedDiscountCode);
-                if (discountInfo && discountInfo.freeShipping) {
-                    effectiveShippingCost = 0;
+                if (discountInfo) {
+                    discountDescription = discountInfo.description;
+                    if (discountInfo.freeShipping) {
+                        effectiveShippingCost = 0;
+                    }
+                    if (discountInfo.discountType === 'percentage') {
+                        discountValue = discountInfo.discountValue;
+                    }
+                }
+            } else if (isQuantityDiscountApplied) {
+                // Apply quantity discount
+                const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+                let applicableRule = null;
+                if (totalQuantity >= 5) {
+                    applicableRule = quantityDiscountRules[5];
+                }
+                
+                if (applicableRule) {
+                    discountDescription = applicableRule.description;
+                    discountValue = applicableRule.discountPercent;
+                    if (applicableRule.freeShipping) {
+                        effectiveShippingCost = 0;
+                    }
                 }
             }
             
@@ -1819,68 +1970,105 @@
             // Calculate original total (subtotal + shipping)
             originalTotal = subtotal + shippingCost;
             
-            // Calculate final total based on discount status
-            if (isDiscountApplied && appliedDiscountCode && discountCodes[selectedCountry]) {
-                const discountInfo = discountCodes[selectedCountry].find(d => d.code === appliedDiscountCode);
+            // Calculate discounts
+            discountAmount = 0;
+            quantityDiscountAmount = 0;
+            
+            if (isDiscountApplied && discountValue > 0) {
+                discountAmount = subtotal * (discountValue / 100);
+                finalTotal = (subtotal - discountAmount) + effectiveShippingCost;
                 
-                if (discountInfo) {
-                    if (discountInfo.discountType === 'percentage') {
-                        // Apply percentage discount only on subtotal (products)
-                        discountAmount = subtotal * (discountInfo.discountValue / 100);
-                        
-                        if (discountInfo.freeShipping) {
-                            // Free shipping: only apply discount to subtotal
-                            finalTotal = subtotal - discountAmount;
-                        } else {
-                            // Regular shipping: apply discount to subtotal only
-                            finalTotal = (subtotal - discountAmount) + effectiveShippingCost;
-                        }
-                    }
-                    
-                    // Update discount row
-                    document.getElementById('discountText').textContent = `${discountInfo.description}:`;
-                    document.getElementById('discountAmount').textContent = `-${discountAmount} ${getCurrency()}`;
-                    document.getElementById('discountRow').style.display = 'flex';
-                    
-                    // Update discount success message
-                    let successMessage = '';
-                    if (discountInfo.freeShipping) {
-                        successMessage = `🎉 مبروك! ${discountInfo.description} | تم توفير ${discountAmount} ${getCurrency()} + توصيل مجاني`;
-                    } else {
-                        successMessage = `🎉 مبروك! ${discountInfo.description} | تم توفير ${discountAmount} ${getCurrency()}`;
-                    }
-                    document.getElementById('discountSuccessText').textContent = successMessage;
-                    document.getElementById('discountSuccess').classList.add('show');
-                    
-                    // Update UI immediately
-                    document.getElementById('originalTotal').textContent = `${originalTotal} ${getCurrency()}`;
-                    document.getElementById('originalTotalRow').style.display = 'flex';
-                    document.getElementById('total').textContent = `${finalTotal} ${getCurrency()}`;
-                    
-                    // Highlight final total
-                    const finalTotalRow = document.getElementById('finalTotalRow');
-                    finalTotalRow.classList.add('highlight');
-                    
-                    // Remove highlight after animation
-                    setTimeout(() => {
-                        finalTotalRow.classList.remove('highlight');
-                    }, 2000);
-                    
-                    // Show mobile notification
-                    showMobileDiscountNotification(successMessage);
-                    
-                    // Scroll to show the total (mobile friendly)
-                    scrollToTotal();
+                // Update discount row
+                document.getElementById('discountText').textContent = `${discountDescription}:`;
+                document.getElementById('discountAmount').textContent = `-${discountAmount} ${getCurrency()}`;
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('quantityDiscountRow').style.display = 'none';
+                
+                // Update discount success message with "تم توفير"
+                let savedAmount = discountAmount;
+                if (effectiveShippingCost === 0) {
+                    savedAmount += shippingCost;
                 }
+                
+                let savedMessage = '';
+                if (selectedCountry === 'مصر') {
+                    savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} جنيه`;
+                } else if (selectedCountry === 'السعودية') {
+                    savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} ريال`;
+                } else {
+                    savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} ${getCurrency()}`;
+                }
+                
+                document.getElementById('discountSuccessText').textContent = savedMessage;
+                document.getElementById('discountSuccess').classList.add('show');
+                
+            } else if (isQuantityDiscountApplied && discountValue > 0) {
+                quantityDiscountAmount = subtotal * (discountValue / 100);
+                finalTotal = (subtotal - quantityDiscountAmount) + effectiveShippingCost;
+                
+                // Update quantity discount row
+                document.getElementById('quantityDiscountText').textContent = `${discountDescription}:`;
+                document.getElementById('quantityDiscountAmount').textContent = `-${quantityDiscountAmount} ${getCurrency()}`;
+                document.getElementById('quantityDiscountRow').style.display = 'flex';
+                document.getElementById('discountRow').style.display = 'none';
+                
+                // Update quantity discount message with "تم توفير"
+                let savedAmount = quantityDiscountAmount;
+                if (effectiveShippingCost === 0) {
+                    savedAmount += shippingCost;
+                }
+                
+                let savedMessage = '';
+                if (selectedCountry === 'مصر') {
+                    savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} جنيه`;
+                } else if (selectedCountry === 'السعودية') {
+                    savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} ريال`;
+                } else {
+                    savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} ${getCurrency()}`;
+                }
+                
+                document.getElementById('quantityDiscountMessageText').textContent = savedMessage;
+                
+                // Hide code discount message
+                document.getElementById('discountSuccess').classList.remove('show');
             } else {
                 finalTotal = originalTotal;
                 document.getElementById('discountRow').style.display = 'none';
+                document.getElementById('quantityDiscountRow').style.display = 'none';
                 document.getElementById('discountSuccess').classList.remove('show');
+            }
+            
+            // Update UI immediately
+            document.getElementById('originalTotal').textContent = `${originalTotal} ${getCurrency()}`;
+            if (isDiscountApplied || isQuantityDiscountApplied) {
+                document.getElementById('originalTotalRow').style.display = 'flex';
+            } else {
                 document.getElementById('originalTotalRow').style.display = 'none';
-                document.getElementById('total').textContent = `${finalTotal} ${getCurrency()}`;
+            }
+            
+            document.getElementById('total').textContent = `${finalTotal} ${getCurrency()}`;
+            
+            // Highlight final total if discount applied
+            if (isDiscountApplied || isQuantityDiscountApplied) {
+                const finalTotalRow = document.getElementById('finalTotalRow');
+                finalTotalRow.classList.add('highlight');
                 
-                // Remove highlight
-                document.getElementById('finalTotalRow').classList.remove('highlight');
+                // Remove highlight after animation
+                setTimeout(() => {
+                    finalTotalRow.classList.remove('highlight');
+                }, 2000);
+                
+                // Show mobile notification
+                let notificationMessage = '';
+                if (isDiscountApplied) {
+                    notificationMessage = `🎉 ${discountDescription} تم تطبيقها!`;
+                } else {
+                    notificationMessage = `🎉 ${discountDescription}`;
+                }
+                showMobileDiscountNotification(notificationMessage);
+                
+                // Scroll to show the total (mobile friendly)
+                scrollToTotal();
             }
             
             // Update shipping note
@@ -1951,7 +2139,7 @@
             if (!governorate || !selectedCountry) return 0;
             
             const countryShipping = shippingPrices[selectedCountry];
-            if (!countryShipping) return selectedCountry === 'السعودية' ? 30 : 60;
+            if (!countryShipping) return selectedCountry === 'السعودية' ? 70 : 70;
             
             // Check for specific governorate
             if (countryShipping[governorate]) {
@@ -1959,7 +2147,7 @@
             }
             
             // Return default
-            return countryShipping.default || (selectedCountry === 'السعودية' ? 30 : 60);
+            return countryShipping.default || (selectedCountry === 'السعودية' ? 70 : 70);
         }
 
         // Update Shipping Note
@@ -1978,10 +2166,29 @@
             
             const cost = calculateShippingCost(governorate);
             
-            if (isDiscountApplied && appliedDiscountCode && discountCodes[selectedCountry]) {
-                const discountInfo = discountCodes[selectedCountry].find(d => d.code === appliedDiscountCode);
+            if ((isDiscountApplied && appliedDiscountCode && discountCodes[selectedCountry]) || isQuantityDiscountApplied) {
+                let freeShipping = false;
                 
-                if (discountInfo && discountInfo.freeShipping) {
+                if (isDiscountApplied && appliedDiscountCode && discountCodes[selectedCountry]) {
+                    const discountInfo = discountCodes[selectedCountry].find(d => d.code === appliedDiscountCode);
+                    if (discountInfo && discountInfo.freeShipping) {
+                        freeShipping = true;
+                    }
+                }
+                
+                if (isQuantityDiscountApplied) {
+                    const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    let applicableRule = null;
+                    if (totalQuantity >= 5) {
+                        applicableRule = quantityDiscountRules[5];
+                    }
+                    
+                    if (applicableRule && applicableRule.freeShipping) {
+                        freeShipping = true;
+                    }
+                }
+                
+                if (freeShipping) {
                     shippingText.textContent = `✅ التوصيل مجاني إلى ${governorate}`;
                     return;
                 }
@@ -2187,12 +2394,33 @@
         function createOrderData() {
             const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
             
+            // Determine which discount type was applied
+            let discountType = 'none';
+            let discountDescription = '';
+            let discountValue = 0;
+            
+            if (isDiscountApplied && appliedDiscountCode) {
+                discountType = 'code';
+                const discountInfo = discountCodes[selectedCountry]?.find(d => d.code === appliedDiscountCode);
+                discountDescription = discountInfo?.description || '';
+                discountValue = discountInfo?.discountValue || 0;
+            } else if (isQuantityDiscountApplied) {
+                discountType = 'quantity';
+                const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+                let applicableRule = null;
+                if (totalQuantity >= 5) {
+                    applicableRule = quantityDiscountRules[5];
+                }
+                discountDescription = applicableRule?.description || '';
+                discountValue = applicableRule?.discountPercent || 0;
+            }
+            
             const orderData = {
                 customer: {
                     name: document.getElementById('fullName').value,
                     phone: document.getElementById('phone').value,
                     email: document.getElementById('email').value,
-                    country: selectedCountry, // أضف هذا حقل مباشر
+                    country: selectedCountry,
                     address: {
                         country: selectedCountry,
                         governorate: document.getElementById('governorate').value,
@@ -2205,7 +2433,7 @@
                     method: paymentMethod,
                     status: 'pending'
                 },
-                paymentStatus: 'pending', // أضف هذا مباشرة
+                paymentStatus: 'pending',
                 totals: {
                     subtotal: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
                     shipping: shippingCost,
@@ -2213,12 +2441,14 @@
                     currency: getCurrency()
                 },
                 discount: {
-                    applied: isDiscountApplied,
+                    type: discountType,
+                    applied: isDiscountApplied || isQuantityDiscountApplied,
                     code: appliedDiscountCode,
-                    amount: discountAmount,
+                    amount: discountAmount + quantityDiscountAmount,
                     originalTotal: originalTotal,
-                    description: isDiscountApplied && appliedDiscountCode ? 
-                        (discountCodes[selectedCountry]?.find(d => d.code === appliedDiscountCode)?.description || '') : ''
+                    description: discountDescription,
+                    discountValue: discountValue,
+                    quantity: cart.reduce((sum, item) => sum + item.quantity, 0)
                 },
                 status: 'جديد',
                 notes: '',
@@ -2228,7 +2458,7 @@
             return orderData;
         }
 
-        // ===================== FIREBASE SAVE FUNCTION - FIXED VERSION =====================
+        // ===================== FIREBASE SAVE FUNCTION =====================
         // دالة الحصول على الرقم التالي للطلب
         async function getNextOrderNumber() {
             try {
@@ -2269,7 +2499,7 @@
             }
         }
 
-        // Save Order to Firebase - FIXED VERSION
+        // Save Order to Firebase
         async function saveOrderToFirebase(orderData) {
             console.log('🚀 بدء عملية الحفظ في Firebase...');
             
@@ -2286,16 +2516,14 @@
                 
                 // 3. إعداد البيانات للـ Firebase (مطابق تماماً للداشبورد)
                 const firebaseData = {
-                    // 🔥 المفتاح: نفس الهيكل الذي يتوقعه الداشبورد
                     orderNumber: orderNumber.toString(),
-                    orderId: orderNumber.toString(), // تأكد أنه string
+                    orderId: orderNumber.toString(),
                     
-                    // معلومات العميل (مطابق تماماً)
                     customer: {
                         name: orderData.customer.name,
                         phone: orderData.customer.phone,
                         email: orderData.customer.email,
-                        country: orderData.customer.country || orderData.customer.address.country, // مهم للفلترة
+                        country: orderData.customer.country,
                         address: {
                             country: orderData.customer.address.country,
                             governorate: orderData.customer.address.governorate,
@@ -2304,19 +2532,15 @@
                         }
                     },
                     
-                    // المنتجات
                     items: orderData.items,
                     
-                    // الدفع
                     payment: {
                         method: orderData.payment.method,
                         status: 'pending'
                     },
                     
-                    // الحالة (مطابق للداشبورد)
                     paymentStatus: 'pending',
                     
-                    // الحسابات المالية
                     totals: {
                         subtotal: orderData.totals.subtotal,
                         shipping: orderData.totals.shipping,
@@ -2324,23 +2548,22 @@
                         currency: orderData.totals.currency
                     },
                     
-                    // الخصم
                     discount: {
+                        type: orderData.discount.type,
                         applied: orderData.discount.applied,
                         code: orderData.discount.code || '',
                         amount: orderData.discount.amount || 0,
                         originalTotal: orderData.discount.originalTotal || orderData.totals.total,
-                        description: orderData.discount.description || ''
+                        description: orderData.discount.description || '',
+                        discountValue: orderData.discount.discountValue || 0,
+                        quantity: orderData.discount.quantity || 0
                     },
                     
-                    // الحالة
                     status: 'جديد',
                     
-                    // التواريخ (مهم جداً)
-                    createdAt: formattedDate, // التاريخ الذي يبحث عنه الداشبورد
+                    createdAt: formattedDate,
                     createdAtTimestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     
-                    // معلومات إضافية
                     notes: '',
                     source: 'checkout-page',
                     version: '2.0'
@@ -2368,10 +2591,9 @@
             }
         }
 
-        // Save Order to LocalStorage - UPDATED TO MATCH FIREBASE STRUCTURE
+        // Save Order to LocalStorage
         function saveOrderToLocalStorage(orderData, orderNumber) {
             try {
-                // نفس هيكل Firebase بالضبط
                 const orderToSave = {
                     orderNumber: orderNumber,
                     orderId: orderNumber.toString(),
@@ -2400,11 +2622,14 @@
                         currency: orderData.totals.currency
                     },
                     discount: {
+                        type: orderData.discount.type,
                         applied: orderData.discount.applied,
                         code: orderData.discount.code || '',
                         amount: orderData.discount.amount || 0,
                         originalTotal: orderData.discount.originalTotal || orderData.totals.total,
-                        description: orderData.discount.description || ''
+                        description: orderData.discount.description || '',
+                        discountValue: orderData.discount.discountValue || 0,
+                        quantity: orderData.discount.quantity || 0
                     },
                     status: 'جديد',
                     createdAt: new Date().toISOString(),
