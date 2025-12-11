@@ -1295,9 +1295,23 @@
             ]
         };
         
-        // Quantity Discount Rules - MODIFIED: فقط 5 منتجات فأكثر بخصم 40%
+        // ==== التعديل: خصم الكمية لكلا البلدين ====
+        // Quantity Discount Rules - لكل بلد
         const quantityDiscountRules = {
-            5: { discountPercent: 40, freeShipping: true, description: 'خصم 40% + توصيل مجاني (لـ5 منتجات فأكثر)' }
+            'السعودية': {
+                5: { 
+                    discountPercent: 50, 
+                    freeShipping: true, 
+                    description: 'خصم 50% + توصيل مجاني (لـ5 منتجات فأكثر)' 
+                }
+            },
+            'مصر': {
+                5: { 
+                    discountPercent: 40, 
+                    freeShipping: true, 
+                    description: 'خصم 40% + توصيل مجاني (لـ5 منتجات فأكثر)' 
+                }
+            }
         };
         
         // Governorates Data بناءً على الصورة
@@ -1757,9 +1771,8 @@
                             hiddenInput.value = gov;
                             list.classList.remove('show');
                             
-                            // Update shipping and apply quantity discount
-                            updateShipping();
-                            applyQuantityDiscount();
+                            // ==== التعديل: تطبيق خصم الكمية فوراً عند اختيار المحافظة ====
+                            applyQuantityDiscountAndUpdate();
                         });
                         list.appendChild(item);
                     });
@@ -1779,9 +1792,8 @@
                     hiddenInput.value = '';
                 }
                 
-                // Update shipping when typing
-                updateShipping();
-                applyQuantityDiscount();
+                // ==== التعديل: تطبيق خصم الكمية عند الكتابة أيضاً ====
+                applyQuantityDiscountAndUpdate();
             });
             
             // Focus event listener
@@ -1835,15 +1847,24 @@
                         hiddenInput.value = selectedItem.textContent;
                         list.classList.remove('show');
                         
-                        // Update shipping and apply quantity discount
-                        updateShipping();
-                        applyQuantityDiscount();
+                        // ==== التعديل: تطبيق خصم الكمية فوراً عند الاختيار ====
+                        applyQuantityDiscountAndUpdate();
                     }
                 }
             });
             
             // Initialize with empty list
             populateAutocomplete();
+        }
+
+        // ==== دالة جديدة: تطبيق خصم الكمية وتحديث الأسعار ====
+        function applyQuantityDiscountAndUpdate() {
+            // تطبيق خصم الكمية أولاً
+            applyQuantityDiscount();
+            
+            // ثم تحديث الأسعار
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            updateTotals(subtotal);
         }
 
         // Update cart prices based on selected country
@@ -1892,19 +1913,36 @@
             updateTotals(subtotal);
         }
 
-        // Apply Quantity Discount Based on Item Count - MODIFIED
+        // ==== التعديل: دالة محسنة لتطبيق خصم الكمية ====
         function applyQuantityDiscount() {
-            if (!selectedCountry || isDiscountApplied) {
-                return; // Don't apply if discount code is used
+            // لا يتم تطبيق خصم الكمية إذا كان هناك خصم كود
+            if (isDiscountApplied) {
+                console.log('خصم الكمية تم إلغاؤه بسبب خصم الكود');
+                isQuantityDiscountApplied = false;
+                document.getElementById('quantityDiscountMessage').classList.remove('show');
+                return;
+            }
+            
+            // التحقق من وجود بلد محدد ومحافظة
+            const governorate = document.getElementById('governorate').value;
+            if (!selectedCountry || !governorate) {
+                console.log('خصم الكمية: يحتاج إلى بلد ومحافظة أولاً');
+                isQuantityDiscountApplied = false;
+                document.getElementById('quantityDiscountMessage').classList.remove('show');
+                return;
             }
             
             // Calculate total quantity
             const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+            console.log(`إجمالي الكمية: ${totalQuantity} منتج`);
             
-            // Find applicable rule - فقط 5 منتجات فأكثر
+            // Find applicable rule for selected country
             let applicableRule = null;
+            const countryRules = quantityDiscountRules[selectedCountry] || {};
+            
             if (totalQuantity >= 5) {
-                applicableRule = quantityDiscountRules[5];
+                applicableRule = countryRules[5];
+                console.log(`خصم الكمية متاح: ${applicableRule ? 'نعم' : 'لا'}`);
             }
             
             if (applicableRule) {
@@ -1915,27 +1953,34 @@
                 message.textContent = `🎉 مبروك! ${applicableRule.description}`;
                 document.getElementById('quantityDiscountMessage').classList.add('show');
                 
-                // Recalculate totals
-                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                updateTotals(subtotal);
+                console.log(`تم تطبيق خصم الكمية: ${applicableRule.description}`);
+                
             } else {
                 isQuantityDiscountApplied = false;
                 document.getElementById('quantityDiscountMessage').classList.remove('show');
+                console.log('خصم الكمية غير متاح أو لم يتم استيفاء الشروط');
             }
         }
 
         // Update Totals with "تم توفير" message
         function updateTotals(subtotal) {
+            console.log('تحديث الإجماليات...');
+            console.log(`المجموع الفرعي: ${subtotal}`);
+            console.log(`خصم الكود مطبق: ${isDiscountApplied}`);
+            console.log(`خصم الكمية مطبق: ${isQuantityDiscountApplied}`);
+            
             document.getElementById('subtotal').textContent = `${subtotal} ${getCurrency()}`;
             
             // Calculate shipping based on governorate
             const governorate = document.getElementById('governorate').value;
             shippingCost = calculateShippingCost(governorate);
+            console.log(`تكلفة الشحن: ${shippingCost}`);
             
             // Apply free shipping based on discount or quantity discount
             let effectiveShippingCost = shippingCost;
             let discountDescription = '';
             let discountValue = 0;
+            let freeShippingApplied = false;
             
             if (isDiscountApplied && appliedDiscountCode && discountCodes[selectedCountry]) {
                 const discountInfo = discountCodes[selectedCountry].find(d => d.code === appliedDiscountCode);
@@ -1943,17 +1988,21 @@
                     discountDescription = discountInfo.description;
                     if (discountInfo.freeShipping) {
                         effectiveShippingCost = 0;
+                        freeShippingApplied = true;
                     }
                     if (discountInfo.discountType === 'percentage') {
                         discountValue = discountInfo.discountValue;
                     }
                 }
+                console.log(`خصم الكود: ${discountDescription}, القيمة: ${discountValue}%, شحن مجاني: ${freeShippingApplied}`);
             } else if (isQuantityDiscountApplied) {
-                // Apply quantity discount
+                // Apply quantity discount for both countries
                 const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+                const countryRules = quantityDiscountRules[selectedCountry] || {};
                 let applicableRule = null;
+                
                 if (totalQuantity >= 5) {
-                    applicableRule = quantityDiscountRules[5];
+                    applicableRule = countryRules[5];
                 }
                 
                 if (applicableRule) {
@@ -1961,14 +2010,17 @@
                     discountValue = applicableRule.discountPercent;
                     if (applicableRule.freeShipping) {
                         effectiveShippingCost = 0;
+                        freeShippingApplied = true;
                     }
                 }
+                console.log(`خصم الكمية: ${discountDescription}, القيمة: ${discountValue}%, شحن مجاني: ${freeShippingApplied}`);
             }
             
             document.getElementById('shipping').textContent = `${effectiveShippingCost} ${getCurrency()}`;
             
             // Calculate original total (subtotal + shipping)
             originalTotal = subtotal + shippingCost;
+            console.log(`المجموع الأصلي: ${originalTotal}`);
             
             // Calculate discounts
             discountAmount = 0;
@@ -1986,7 +2038,7 @@
                 
                 // Update discount success message with "تم توفير"
                 let savedAmount = discountAmount;
-                if (effectiveShippingCost === 0) {
+                if (freeShippingApplied) {
                     savedAmount += shippingCost;
                 }
                 
@@ -1995,8 +2047,6 @@
                     savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} جنيه`;
                 } else if (selectedCountry === 'السعودية') {
                     savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} ريال`;
-                } else {
-                    savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} ${getCurrency()}`;
                 }
                 
                 document.getElementById('discountSuccessText').textContent = savedMessage;
@@ -2014,7 +2064,7 @@
                 
                 // Update quantity discount message with "تم توفير"
                 let savedAmount = quantityDiscountAmount;
-                if (effectiveShippingCost === 0) {
+                if (freeShippingApplied) {
                     savedAmount += shippingCost;
                 }
                 
@@ -2023,8 +2073,6 @@
                     savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} جنيه`;
                 } else if (selectedCountry === 'السعودية') {
                     savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} ريال`;
-                } else {
-                    savedMessage = `🎉 ${discountDescription} | تم توفير ${savedAmount} ${getCurrency()}`;
                 }
                 
                 document.getElementById('quantityDiscountMessageText').textContent = savedMessage;
@@ -2047,6 +2095,7 @@
             }
             
             document.getElementById('total').textContent = `${finalTotal} ${getCurrency()}`;
+            console.log(`المجموع النهائي: ${finalTotal}`);
             
             // Highlight final total if discount applied
             if (isDiscountApplied || isQuantityDiscountApplied) {
@@ -2072,13 +2121,14 @@
             }
             
             // Update shipping note
-            updateShippingNote(governorate);
+            updateShippingNote(governorate, freeShippingApplied);
             
             // Update mobile total preview
             updateMobileTotalPreview();
             
             // Enable/Disable submit button based on total
             document.getElementById('submitOrderBtn').disabled = finalTotal <= 0;
+            console.log(`زر التأكيد: ${finalTotal <= 0 ? 'معطل' : 'مفعل'}`);
         }
 
         // Show Mobile Discount Notification
@@ -2151,7 +2201,7 @@
         }
 
         // Update Shipping Note
-        function updateShippingNote(governorate) {
+        function updateShippingNote(governorate, freeShippingApplied = false) {
             const shippingText = document.getElementById('shippingText');
             
             if (!selectedCountry || selectedPrice <= 0) {
@@ -2166,32 +2216,9 @@
             
             const cost = calculateShippingCost(governorate);
             
-            if ((isDiscountApplied && appliedDiscountCode && discountCodes[selectedCountry]) || isQuantityDiscountApplied) {
-                let freeShipping = false;
-                
-                if (isDiscountApplied && appliedDiscountCode && discountCodes[selectedCountry]) {
-                    const discountInfo = discountCodes[selectedCountry].find(d => d.code === appliedDiscountCode);
-                    if (discountInfo && discountInfo.freeShipping) {
-                        freeShipping = true;
-                    }
-                }
-                
-                if (isQuantityDiscountApplied) {
-                    const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
-                    let applicableRule = null;
-                    if (totalQuantity >= 5) {
-                        applicableRule = quantityDiscountRules[5];
-                    }
-                    
-                    if (applicableRule && applicableRule.freeShipping) {
-                        freeShipping = true;
-                    }
-                }
-                
-                if (freeShipping) {
-                    shippingText.textContent = `✅ التوصيل مجاني إلى ${governorate}`;
-                    return;
-                }
+            if (freeShippingApplied) {
+                shippingText.textContent = `✅ التوصيل مجاني إلى ${governorate}`;
+                return;
             }
             
             shippingText.textContent = `🚚 الشحن إلى ${governorate} بـ ${cost} ${getCurrency()}`;
@@ -2398,21 +2425,27 @@
             let discountType = 'none';
             let discountDescription = '';
             let discountValue = 0;
+            let freeShippingApplied = false;
             
             if (isDiscountApplied && appliedDiscountCode) {
                 discountType = 'code';
                 const discountInfo = discountCodes[selectedCountry]?.find(d => d.code === appliedDiscountCode);
                 discountDescription = discountInfo?.description || '';
                 discountValue = discountInfo?.discountValue || 0;
+                freeShippingApplied = discountInfo?.freeShipping || false;
             } else if (isQuantityDiscountApplied) {
                 discountType = 'quantity';
                 const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+                const countryRules = quantityDiscountRules[selectedCountry] || {};
                 let applicableRule = null;
+                
                 if (totalQuantity >= 5) {
-                    applicableRule = quantityDiscountRules[5];
+                    applicableRule = countryRules[5];
                 }
+                
                 discountDescription = applicableRule?.description || '';
                 discountValue = applicableRule?.discountPercent || 0;
+                freeShippingApplied = applicableRule?.freeShipping || false;
             }
             
             const orderData = {
@@ -2448,6 +2481,7 @@
                     originalTotal: originalTotal,
                     description: discountDescription,
                     discountValue: discountValue,
+                    freeShipping: freeShippingApplied,
                     quantity: cart.reduce((sum, item) => sum + item.quantity, 0)
                 },
                 status: 'جديد',
@@ -2556,6 +2590,7 @@
                         originalTotal: orderData.discount.originalTotal || orderData.totals.total,
                         description: orderData.discount.description || '',
                         discountValue: orderData.discount.discountValue || 0,
+                        freeShipping: orderData.discount.freeShipping || false,
                         quantity: orderData.discount.quantity || 0
                     },
                     
@@ -2629,6 +2664,7 @@
                         originalTotal: orderData.discount.originalTotal || orderData.totals.total,
                         description: orderData.discount.description || '',
                         discountValue: orderData.discount.discountValue || 0,
+                        freeShipping: orderData.discount.freeShipping || false,
                         quantity: orderData.discount.quantity || 0
                     },
                     status: 'جديد',
@@ -2706,6 +2742,7 @@
 💰 السعر الأصلي: ${orderData.discount.originalTotal} ${orderData.totals.currency}
 ✅ السعر بعد الخصم: ${orderData.totals.total} ${orderData.totals.currency}
 💲 قيمة الخصم: ${orderData.discount.amount} ${orderData.totals.currency}
+${orderData.discount.freeShipping ? '🚚 التوصيل: مجاني' : ''}
 `;
             }
             
