@@ -8,6 +8,12 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '854334524224457'); fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" src="https://www.facebook.com/tr?id=854334524224457&ev=PageView&noscript=1"/></noscript>
+<!-- End Facebook Pixel Code -->
     <style>
         :root {
             --primary: #4361ee;
@@ -2354,7 +2360,30 @@
                     setTimeout(() => {
                         sendWhatsAppNotification(orderNumber, orderData);
                     }, 1000);
-                    
+                    // ===================== FACEBOOK PURCHASE TRACKING =====================
+console.log('📊 جاري إرسال حدث الشراء إلى فيسبوك...');
+try {
+    // إرسال حدث الشراء إلى بكسل فيسبوك
+    fbq('track', 'Purchase', {
+        value: finalTotal, // القيمة الإجمالية للطلب
+        currency: selectedCountry === 'مصر' ? 'EGP' : 'SAR', // العملة
+        contents: cart.map(item => ({
+            id: item.id || 'product_' + item.name,
+            quantity: item.quantity || 1,
+            item_price: item.price || selectedPrice
+        })),
+        content_type: 'product',
+        order_id: orderNumber.toString() // رقم الطلب
+    });
+    console.log('✅ تم إرسال حدث Purchase إلى فيسبوك:', {
+        value: finalTotal,
+        currency: selectedCountry === 'مصر' ? 'EGP' : 'SAR',
+        order_id: orderNumber
+    });
+} catch (pixelError) {
+    console.error('❌ خطأ في إرسال حدث فيسبوك:', pixelError);
+}
+// ===================== END FACEBOOK PURCHASE TRACKING =====================
                     console.log('🎊 تمت معالجة الطلب بنجاح!');
                     console.log('📊 رقم الطلب:', orderNumber);
                     console.log('📍 سيظهر في الداشبورد فوراً');
